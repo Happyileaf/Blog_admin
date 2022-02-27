@@ -8,7 +8,7 @@ import tableRouter from './modules/table'
 import nestedRouter from './modules/nested'
 
 import articleRouter from './article/article'
-import categoryRouter from './category/category'
+import categoryRouter from './type/type'
 import homeRouter from './home/home'
 import infoRouter from './info/info'
 import settingRouter from './setting/setting'

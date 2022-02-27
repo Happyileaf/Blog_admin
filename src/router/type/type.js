@@ -12,15 +12,15 @@ const categoryRouter = {
     },
     children: [
       {
-        path: 'keyboard',
-        component: () => import('@/views/charts/keyboard'),
-        name: 'KeyboardChart',
+        path: 'category',
+        component: () => import('@/pages/type/Category'),
+        name: 'Category',
         meta: { title: '分类管理', noCache: true }
       },
       {
-        path: 'line',
-        component: () => import('@/views/charts/line'),
-        name: 'LineChart',
+        path: 'tag',
+        component: () => import('@/pages/type/Tag'),
+        name: 'Tag',
         meta: { title: '标签管理', noCache: true }
       },
     ]

@@ -12,15 +12,15 @@ const settingRouter = {
     },
     children: [
       {
-        path: 'keyboard',
-        component: () => import('@/views/charts/keyboard'),
-        name: 'KeyboardChart',
+        path: 'infrastructure',
+        component: () => import('@/pages/setting/Infrastructure'),
+        name: 'Infrastructure',
         meta: { title: '基础设置', noCache: true }
       },
       {
-        path: 'line',
-        component: () => import('@/views/charts/line'),
-        name: 'LineChart',
+        path: 'basicInformation',
+        component: () => import('@/pages/setting/BasicInformation'),
+        name: 'BasicInformation',
         meta: { title: '基本信息', noCache: true }
       }
     ]

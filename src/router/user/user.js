@@ -12,15 +12,15 @@ export const userRouter = {
     },
     children: [
       {
-        path: 'keyboard',
-        component: () => import('@/views/charts/keyboard'),
-        name: 'KeyboardChart',
+        path: 'user',
+        component: () => import('@/pages/user/User'),
+        name: 'User',
         meta: { title: '普通用户', noCache: true }
       },
       {
-        path: 'line',
-        component: () => import('@/views/charts/line'),
-        name: 'LineChart',
+        path: 'administrator',
+        component: () => import('@/pages/user/Administrator'),
+        name: 'Administrator',
         meta: { title: '管理员', noCache: true },
       },
     ]

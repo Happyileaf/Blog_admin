@@ -12,15 +12,15 @@ const articleRouter = {
   },
   children: [
     {
-      path: 'keyboard',
-      component: () => import('@/views/charts/keyboard'),
-      name: 'KeyboardChart',
+      path: 'issue',
+      component: () => import('@/pages/article/Issue'),
+      name: 'Issue',
       meta: { title: '发布', noCache: true }
     },
     {
-      path: 'line',
-      component: () => import('@/views/charts/line'),
-      name: 'LineChart',
+      path: 'articleList',
+      component: () => import('@/pages/article/ArticleList'),
+      name: 'ArticleList',
       meta: { title: '文章列表', noCache: true }
     },
   ]

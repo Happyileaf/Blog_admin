@@ -12,8 +12,8 @@ const infoRouter = {
     },
     children: [
       {
-        path: 'index',
-        component: () => import('@/views/profile/index'),
+        path: 'profile',
+        component: () => import('@/pages/info/Info'),
         name: 'Profile',
         meta: { title: '用户主页', icon: 'el-icon-s-home', noCache: true }
       }
