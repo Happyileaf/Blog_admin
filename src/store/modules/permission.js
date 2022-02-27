@@ -35,7 +35,9 @@ export function filterAsyncRoutes(routes, roles) {
 }
 
 const state = {
-  routes: [],
+  // 修改标记：将 routes 初始化为 constantRoutes
+  // routes: [],
+  routes: constantRoutes,
   addRoutes: []
 }
 

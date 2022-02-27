@@ -5,7 +5,9 @@ module.exports = {
    * @type {boolean} true | false
    * @description Whether show the settings right-panel
    */
-  showSettings: true,
+  
+  // 修改标记：关闭悬浮setting按钮
+  showSettings: false,
 
   /**
    * @type {boolean} true | false
@@ -23,7 +25,7 @@ module.exports = {
    * @type {boolean} true | false
    * @description Whether show the logo in sidebar
    */
-  sidebarLogo: false,
+  sidebarLogo: true,
 
   /**
    * @type {string | array} 'production' | ['production', 'development']
