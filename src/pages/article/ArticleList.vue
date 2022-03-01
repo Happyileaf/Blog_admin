@@ -2,21 +2,21 @@
   <div class="app-container">
     <div class="filter-container">
       <el-input
-        v-model="listQuery.title"
+        v-model="searchQuery.title"
         placeholder="标题"
         style="width: 200px"
         class="filter-item"
-        @keyup.enter.native="handleFilter"
+        @keyup.enter.native="handleSearch"
       />
       <el-input
-        v-model="listQuery.author"
+        v-model="searchQuery.author"
         placeholder="作者"
         style="width: 200px"
         class="filter-item"
-        @keyup.enter.native="handleFilter"
+        @keyup.enter.native="handleSearch"
       />
       <el-select
-        v-model="listQuery.category"
+        v-model="searchQuery.category"
         placeholder="分类"
         clearable
         class="filter-item"
@@ -30,7 +30,7 @@
         />
       </el-select>
       <el-select
-        v-model="listQuery.tags"
+        v-model="searchQuery.tags"
         placeholder="标签"
         clearable
         class="filter-item"
@@ -44,7 +44,7 @@
         />
       </el-select>
       <el-select
-        v-model="listQuery.status"
+        v-model="searchQuery.status"
         placeholder="状态"
         clearable
         class="filter-item"
@@ -62,7 +62,7 @@
         class="filter-item"
         type="primary"
         icon="el-icon-search"
-        @click="handleFilter"
+        @click="handleSearch"
       >
         搜索
       </el-button>
@@ -190,8 +190,8 @@
     <pagination
       v-show="total > 0"
       :total="total"
-      :page.sync="listQuery.page"
-      :limit.sync="listQuery.limit"
+      :page.sync="searchQuery.page"
+      :limit.sync="searchQuery.limit"
       @pagination="getList"
     />
   </div>
@@ -239,7 +239,7 @@ export default {
       list: ARTICLE_ITEM,
       total: 0,
       listLoading: true,
-      listQuery: {
+      searchQuery: {
         page: 1,
         limit: 20,
         importance: undefined,
@@ -247,6 +247,7 @@ export default {
         type: undefined,
         sort: "+id",
       },
+      searchQueryCopy: {},
       articleCategoryOptions: ARTICLE_CATEGORY,
       articleStatusOptions: ATRICLE_STATUS,
       temp: {
@@ -284,18 +285,20 @@ export default {
     };
   },
   created() {
+    this.searchQueryCopy = { ...this.searchQuery };
     this.getList();
   },
   methods: {
     getList() {
       this.listLoading = true;
-      const { res } = fetchList(this.listQuery);
+      const { res } = fetchList(this.searchQueryCopy);
       if (res || 1) {
         this.listLoading = false;
       }
     },
-    handleFilter() {
-      this.listQuery.page = 1;
+    handleSearch() {
+      this.searchQueryCopy = { ...this.searchQuery };
+      this.searchQuery.page = 1;
       this.getList();
     },
     handleModifyStatus(row, status) {
