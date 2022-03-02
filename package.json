@@ -15,6 +15,14 @@
     "test:ci": "npm run lint && npm run test:unit"
   },
   "dependencies": {
+    "@bytemd/plugin-breaks": "^1.11.0",
+    "@bytemd/plugin-footnotes": "^1.11.0",
+    "@bytemd/plugin-frontmatter": "^1.11.0",
+    "@bytemd/plugin-gemoji": "^1.11.0",
+    "@bytemd/plugin-gfm": "^1.11.0",
+    "@bytemd/plugin-highlight": "^1.11.0",
+    "@bytemd/plugin-mermaid": "^1.11.0",
+    "@bytemd/vue": "^1.11.0",
     "axios": "0.18.1",
     "clipboard": "2.0.4",
     "codemirror": "5.45.0",

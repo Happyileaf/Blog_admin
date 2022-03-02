@@ -99,4 +99,9 @@ export default {
   .mobile .fixed-header {
     width: 100%;
   }
+
+  //防止byteMD最大化后被侧边栏遮挡
+  .sidebar-container{
+    z-index: 0 !important;
+  }
 </style>

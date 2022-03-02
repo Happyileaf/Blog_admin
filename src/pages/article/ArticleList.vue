@@ -204,34 +204,34 @@ import {
   createArticle,
   updateArticle,
   publishOrDraftArticle,
-  deleteArticle,
-} from "@/api/article";
-import waves from "@/directive/waves"; // waves directive
-import { parseTime } from "@/utils";
-import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
+  deleteArticle
+} from '@/api/article'
+import waves from '@/directive/waves' // waves directive
+import { parseTime } from '@/utils'
+import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
 import {
   ARTICLE_ITEM,
   ATRICLE_STATUS,
-  ATRICLE_STATUS_KV,
-} from "@/constant/article";
-import { ARTICLE_CATEGORY } from "@/constant/type";
+  ATRICLE_STATUS_KV
+} from '@/constant/article'
+import { ARTICLE_CATEGORY } from '@/constant/type'
 
 export default {
-  name: "ComplexTable",
+  name: 'ComplexTable',
   components: { Pagination },
   directives: { waves },
   filters: {
     statusFilter(status) {
       const statusMap = {
-        1: "success",
-        0: "info",
-      };
-      return statusMap[status];
+        1: 'success',
+        0: 'info'
+      }
+      return statusMap[status]
     },
     articleStatusFilter(key) {
-      return ATRICLE_STATUS_KV[key];
-    },
+      return ATRICLE_STATUS_KV[key]
+    }
   },
   data() {
     return {
@@ -245,7 +245,7 @@ export default {
         importance: undefined,
         title: undefined,
         type: undefined,
-        sort: "+id",
+        sort: '+id'
       },
       searchQueryCopy: {},
       articleCategoryOptions: ARTICLE_CATEGORY,
@@ -253,131 +253,131 @@ export default {
       temp: {
         id: undefined,
         importance: 1,
-        remark: "",
+        remark: '',
         timestamp: new Date(),
-        title: "",
-        type: "",
-        status: "published",
+        title: '',
+        type: '',
+        status: 'published'
       },
       dialogFormVisible: false,
-      dialogStatus: "",
+      dialogStatus: '',
       textMap: {
-        update: "Edit",
-        create: "Create",
+        update: 'Edit',
+        create: 'Create'
       },
       rules: {
         type: [
-          { required: true, message: "type is required", trigger: "change" },
+          { required: true, message: 'type is required', trigger: 'change' }
         ],
         timestamp: [
           {
-            type: "date",
+            type: 'date',
             required: true,
-            message: "timestamp is required",
-            trigger: "change",
-          },
+            message: 'timestamp is required',
+            trigger: 'change'
+          }
         ],
         title: [
-          { required: true, message: "title is required", trigger: "blur" },
-        ],
+          { required: true, message: 'title is required', trigger: 'blur' }
+        ]
       },
-      downloadLoading: false,
-    };
+      downloadLoading: false
+    }
   },
   created() {
-    this.searchQueryCopy = { ...this.searchQuery };
-    this.getList();
+    this.searchQueryCopy = { ...this.searchQuery }
+    this.getList()
   },
   methods: {
     getList() {
-      this.listLoading = true;
-      const { res } = fetchList(this.searchQueryCopy);
+      this.listLoading = true
+      const { res } = fetchList(this.searchQueryCopy)
       if (res || 1) {
-        this.listLoading = false;
+        this.listLoading = false
       }
     },
     handleSearch() {
-      this.searchQueryCopy = { ...this.searchQuery };
-      this.searchQuery.page = 1;
-      this.getList();
+      this.searchQueryCopy = { ...this.searchQuery }
+      this.searchQuery.page = 1
+      this.getList()
     },
     handleModifyStatus(row, status) {
       const obj = {
         article_id: row.article_id,
-        push_status: status,
-      };
-      const { res } = publishOrDraftArticle(obj);
+        status: status
+      }
+      const { res } = publishOrDraftArticle(obj)
       if (res || 1) {
         this.$message({
-          message: "操作Success",
-          type: "success",
-        });
-        row.status.push_status = status;
+          message: '操作Success',
+          type: 'success'
+        })
+        row.status.push_status = status
       }
     },
     resetTemp() {
       this.temp = {
         id: undefined,
         importance: 1,
-        remark: "",
+        remark: '',
         timestamp: new Date(),
-        title: "",
-        status: "published",
-        type: "",
-      };
+        title: '',
+        status: 'published',
+        type: ''
+      }
     },
     handleCreate() {
-      this.$router.push({ path: "/article/issue", query: {} });
+      this.$router.push({ path: '/article/issue', query: {}})
     },
     handleUpdate(row) {
       this.$router.push({
-        path: "/article/issue",
-        query: { article_id: row.article_id },
-      });
+        path: '/article/issue',
+        query: { article_id: row.article_id }
+      })
     },
     handleDelete(row, index) {
-      const { res } = deleteArticle(row.article_id);
+      const { res } = deleteArticle(row.article_id)
       if (res || 1) {
         this.$notify({
-          title: "Success",
-          message: "Delete Successfully",
-          type: "success",
-          duration: 2000,
-        });
-        this.list.splice(index, 1);
+          title: 'Success',
+          message: 'Delete Successfully',
+          type: 'success',
+          duration: 2000
+        })
+        this.list.splice(index, 1)
       }
     },
     handleDownload() {
-      this.downloadLoading = true;
-      import("@/vendor/Export2Excel").then((excel) => {
-        const tHeader = ["timestamp", "title", "type", "importance", "status"];
+      this.downloadLoading = true
+      import('@/vendor/Export2Excel').then((excel) => {
+        const tHeader = ['timestamp', 'title', 'type', 'importance', 'status']
         const filterVal = [
-          "timestamp",
-          "title",
-          "type",
-          "importance",
-          "status",
-        ];
-        const data = this.formatJson(filterVal);
+          'timestamp',
+          'title',
+          'type',
+          'importance',
+          'status'
+        ]
+        const data = this.formatJson(filterVal)
         excel.export_json_to_excel({
           header: tHeader,
           data,
-          filename: "table-list",
-        });
-        this.downloadLoading = false;
-      });
+          filename: 'table-list'
+        })
+        this.downloadLoading = false
+      })
     },
     formatJson(filterVal) {
       return this.list.map((v) =>
         filterVal.map((j) => {
-          if (j === "timestamp") {
-            return parseTime(v[j]);
+          if (j === 'timestamp') {
+            return parseTime(v[j])
           } else {
-            return v[j];
+            return v[j]
           }
         })
-      );
-    },
-  },
-};
+      )
+    }
+  }
+}
 </script>
