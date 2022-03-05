@@ -152,7 +152,7 @@ export default {
       type: Object,
       default: () => {
         return {
-          name: '',
+          username: '',
           email: ''
         }
       }
@@ -174,7 +174,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['name', 'avatar', 'roles']),
+    ...mapGetters(['username', 'avatar', 'roles']),
     drawerShow: {
       get() {
         return this.show

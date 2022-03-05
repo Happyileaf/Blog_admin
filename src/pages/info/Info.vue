@@ -1,3 +1,11 @@
+<!--
+ * @Author: your name
+ * @Date: 2022-03-04 09:38:12
+ * @LastEditTime: 2022-03-05 16:24:22
+ * @LastEditors: your name
+ * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ * @FilePath: \Blog_admin\src\pages\info\Info.vue
+-->
 <template>
   <div class="app-container">
     <div v-if="user">
@@ -43,7 +51,7 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'name',
+      'username',
       'roles',
       'avatar',
       'introduction',
@@ -74,7 +82,7 @@ export default {
       //   skills: this.skills,
       // };
       this.user = {
-        ...userInfo
+        ...userInfo[0]
       }
     }
   }

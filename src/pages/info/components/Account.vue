@@ -1,15 +1,15 @@
 <!--
  * @Author: your name
  * @Date: 2022-03-04 09:38:12
- * @LastEditTime: 2022-03-05 08:43:58
- * @LastEditors: your name
+ * @LastEditTime: 2022-03-05 16:19:03
+ * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \Blog_admin\src\pages\info\components\Account.vue
 -->
 <template>
   <el-form label-width="80px">
     <el-form-item label="Name">
-      <el-input v-model.trim="userInfo.name" />
+      <el-input v-model.trim="userInfo.username" />
     </el-form-item>
     <el-form-item label="Intro">
       <el-input v-model.trim="userInfo.introduction" />
