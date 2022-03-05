@@ -1,4 +1,4 @@
-import { login, logout, getInfo } from '@/api/user'
+import { login, logout, getInfo, updataInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import router, { resetRouter } from '@/router'
 
@@ -7,7 +7,14 @@ const state = {
   name: '',
   avatar: '',
   introduction: '',
-  roles: []
+  roles: [],
+  company: '',
+  location: '',
+  email: '',
+  website: '',
+  socialAccount: [],
+  education: [],
+  skills: []
 }
 
 const mutations = {
@@ -25,6 +32,27 @@ const mutations = {
   },
   SET_ROLES: (state, roles) => {
     state.roles = roles
+  },
+  SET_COMPANY: (state, company) => {
+    state.company = company
+  },
+  SET_LOCATION: (state, location) => {
+    state.location = location
+  },
+  SET_EMIAL: (state, emai) => {
+    state.emai = emai
+  },
+  SET_WEBSITE: (state, website) => {
+    state.website = website
+  },
+  SET_EDUCATION: (state, education) => {
+    state.education = education
+  },
+  SET_SKILLS: (state, skills) => {
+    state.skills = skills
+  },
+  SET_SOCIALACCOUNT: (state, socialAccount) => {
+    state.socialAccount = socialAccount
   }
 }
 
@@ -38,34 +66,6 @@ const actions = {
         commit('SET_TOKEN', data.token)
         setToken(data.token)
         resolve()
-      }).catch(error => {
-        reject(error)
-      })
-    })
-  },
-
-  // get user info
-  getInfo({ commit, state }) {
-    return new Promise((resolve, reject) => {
-      getInfo(state.token).then(response => {
-        const { data } = response
-
-        if (!data) {
-          reject('Verification failed, please Login again.')
-        }
-
-        const { roles, name, avatar, introduction } = data
-
-        // roles must be a non-empty array
-        if (!roles || roles.length <= 0) {
-          reject('getInfo: roles must be a non-null array!')
-        }
-
-        commit('SET_ROLES', roles)
-        commit('SET_NAME', name)
-        commit('SET_AVATAR', avatar)
-        commit('SET_INTRODUCTION', introduction)
-        resolve(data)
       }).catch(error => {
         reject(error)
       })
@@ -86,6 +86,65 @@ const actions = {
         dispatch('tagsView/delAllViews', null, { root: true })
 
         resolve()
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+
+  // get user info
+  getInfo({ commit, state }) {
+    return new Promise((resolve, reject) => {
+      getInfo(state.token).then(response => {
+        const { data } = response
+
+        if (!data) {
+          reject('Verification failed, please Login again.')
+        }
+
+        const { roles, name, avatar, introduction,
+          company,
+          location,
+          email,
+          website,
+          socialAccount,
+          education,
+          skills } = data
+
+        // roles must be a non-empty array
+        if (!roles || roles.length <= 0) {
+          reject('getInfo: roles must be a non-null array!')
+        }
+
+        commit('SET_ROLES', roles)
+        commit('SET_NAME', name)
+        commit('SET_AVATAR', avatar)
+        commit('SET_INTRODUCTION', introduction)
+        commit('SET_COMPANY', company)
+        commit('SET_LOCATION', location)
+        commit('SET_EMIAL', email)
+        commit('SET_WEBSITE', website)
+        commit('SET_SOCIALACCOUNT', socialAccount)
+        commit('SET_EDUCATION', education)
+        commit('SET_SKILLS', skills)
+        resolve(data)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+
+  updateInfo({ dispatch, commit, state }, data) {
+    return new Promise((resolve, reject) => {
+      const query = { ...data, token: state.token }
+      updataInfo(query).then(response => {
+        const { data } = response
+
+        if (!data) {
+          reject('Verification failed, please Login again.')
+        }
+
+        dispatch('user/getInfo')
       }).catch(error => {
         reject(error)
       })

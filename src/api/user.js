@@ -23,41 +23,10 @@ export function getInfo(token) {
   })
 }
 
-/**
-* @description: 新建分类
-* @param {*} data
-* @return {*}
-*/
-export function createCategory(data) {
+export function updataInfo(data) {
   return request({
-    url: `/vue-element-admin/Category/create`,
-    method: `post`,
+    url: '/vue-element-admin/user/login',
+    method: 'post',
     data
   })
 }
-
-/**
-* @description: 更新分类
-* @param {*} data
-* @return {*}
-*/
-export function updateCategory(data) {
-  return request({
-    url: `/vue-element-admin/Category/update`,
-    method: `post`,
-    data
-  })
-}
-
-/**
-* @description: 删除分类
-* @param {*} id
-* @return {*}
-*/
-export function deleteCategory(id) {
-  return request({
-    url: `/vue-element-admin/article/update/${id}`,
-    method: `delete`
-  })
-}
-
