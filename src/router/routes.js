@@ -7,11 +7,12 @@ import chartsRouter from './modules/charts'
 import tableRouter from './modules/table'
 import nestedRouter from './modules/nested'
 
+import dashboardRouter from './dashboard/dashboard'
 import articleRouter from './article/article'
 import categoryRouter from './type/type'
 import homeRouter from './home/home'
 import infoRouter from './info/info'
-import settingRouter from './setting/setting'
+import presetRouter from './preset/preset'
 import userRouter from './user/user'
 
 /**
@@ -75,7 +76,7 @@ export const constantRoutes = [
   {
     path: '/',
     component: Layout,
-    redirect: '/home',
+    redirect: '/dashboard'
     // children: [
     //   {
     //     path: 'dashboard',
@@ -125,14 +126,13 @@ export const constantRoutes = [
   //   ]
   // },
 
-  homeRouter,
+  // homeRouter,
+  dashboardRouter,
   infoRouter,
   articleRouter,
   userRouter,
   categoryRouter,
-
-  settingRouter,
-  
+  presetRouter,
 
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }

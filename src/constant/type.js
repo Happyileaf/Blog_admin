@@ -23,13 +23,19 @@ export const ARTICLE_TAG = [
 ]
 
 export const ARTICLE_CATEGORY_KV = KV(ARTICLE_CATEGORY)
+export const ARTICLE_CATEGORY_ARR = ARR(ARTICLE_CATEGORY)
 export const ARTICLE_TAG_KV = KV(ARTICLE_TAG)
+export const ARTICLE_TAG_ARR = ARR(ARTICLE_TAG)
 
 export function KV(obj) {
   return obj.reduce((acc, cur) => {
     acc[cur.key] = cur.display_name
     return acc
   }, {})
+}
+
+export function ARR(obj) {
+  return obj.map(x => x.display_name)
 }
 
 export function fun(obj) {
@@ -133,85 +139,85 @@ export const CATEGORY_LIST = [
 ]
 
 export const TAG_LIST =
-[
-  {
-    tag_id: 0,
-    tag_name: 'HTML',
-    tag_url: 'frontend',
-    rank: 0,
-    back_ground: 'https://lc-mhke0kuv.cn-n1.lcfile.com/8c95587526f346c0.png',
-    post_article_count: 12896,
-    concern_user_count: 295818,
-    status: 1
-  },
-  {
-    tag_id: 1,
-    tag_name: 'CSS',
-    tag_url: 'frontend',
-    rank: 0,
-    back_ground: 'https://lc-mhke0kuv.cn-n1.lcfile.com/8c95587526f346c0.png',
-    post_article_count: 12896,
-    concern_user_count: 295818,
-    status: 1
-  },
-  {
-    tag_id: 2,
-    tag_name: 'Javascript',
-    tag_url: 'frontend',
-    rank: 0,
-    back_ground: 'https://lc-mhke0kuv.cn-n1.lcfile.com/8c95587526f346c0.png',
-    post_article_count: 12896,
-    concern_user_count: 295818,
-    status: 1
-  },
-  {
-    tag_id: 3,
-    tag_name: 'Vue',
-    tag_url: 'frontend',
-    rank: 0,
-    back_ground: 'https://lc-mhke0kuv.cn-n1.lcfile.com/8c95587526f346c0.png',
-    post_article_count: 12896,
-    concern_user_count: 295818,
-    status: 1
-  },
-  {
-    tag_id: 4,
-    tag_name: 'React',
-    tag_url: 'frontend',
-    rank: 0,
-    back_ground: 'https://lc-mhke0kuv.cn-n1.lcfile.com/8c95587526f346c0.png',
-    post_article_count: 12896,
-    concern_user_count: 295818,
-    status: 1
-  },
-  {
-    tag_id: 5,
-    tag_name: 'Angular',
-    tag_url: 'frontend',
-    rank: 0,
-    back_ground: 'https://lc-mhke0kuv.cn-n1.lcfile.com/8c95587526f346c0.png',
-    post_article_count: 12896,
-    concern_user_count: 295818,
-    status: 1
-  },
-  {
-    tag_id: 6,
-    tag_name: 'Node.js',
-    tag_url: 'frontend',
-    rank: 0,
-    back_ground: 'https://lc-mhke0kuv.cn-n1.lcfile.com/8c95587526f346c0.png',
-    post_article_count: 12896,
-    concern_user_count: 295818,
-    status: 1
-  },
-  {
-    tag_id: 7,
-    tag_name: 'Webpack',
-    tag_url: 'frontend',
-    rank: 0,
-    back_ground: 'https://lc-mhke0kuv.cn-n1.lcfile.com/8c95587526f346c0.png',
-    post_article_count: 12896,
-    concern_user_count: 295818,
-    status: 1
-  }
-]
+  [
+    {
+      tag_id: 0,
+      tag_name: 'HTML',
+      tag_url: 'frontend',
+      rank: 0,
+      back_ground: 'https://lc-mhke0kuv.cn-n1.lcfile.com/8c95587526f346c0.png',
+      post_article_count: 12896,
+      concern_user_count: 295818,
+      status: 1
+    },
+    {
+      tag_id: 1,
+      tag_name: 'CSS',
+      tag_url: 'frontend',
+      rank: 0,
+      back_ground: 'https://lc-mhke0kuv.cn-n1.lcfile.com/8c95587526f346c0.png',
+      post_article_count: 12896,
+      concern_user_count: 295818,
+      status: 1
+    },
+    {
+      tag_id: 2,
+      tag_name: 'Javascript',
+      tag_url: 'frontend',
+      rank: 0,
+      back_ground: 'https://lc-mhke0kuv.cn-n1.lcfile.com/8c95587526f346c0.png',
+      post_article_count: 12896,
+      concern_user_count: 295818,
+      status: 1
+    },
+    {
+      tag_id: 3,
+      tag_name: 'Vue',
+      tag_url: 'frontend',
+      rank: 0,
+      back_ground: 'https://lc-mhke0kuv.cn-n1.lcfile.com/8c95587526f346c0.png',
+      post_article_count: 12896,
+      concern_user_count: 295818,
+      status: 1
+    },
+    {
+      tag_id: 4,
+      tag_name: 'React',
+      tag_url: 'frontend',
+      rank: 0,
+      back_ground: 'https://lc-mhke0kuv.cn-n1.lcfile.com/8c95587526f346c0.png',
+      post_article_count: 12896,
+      concern_user_count: 295818,
+      status: 1
+    },
+    {
+      tag_id: 5,
+      tag_name: 'Angular',
+      tag_url: 'frontend',
+      rank: 0,
+      back_ground: 'https://lc-mhke0kuv.cn-n1.lcfile.com/8c95587526f346c0.png',
+      post_article_count: 12896,
+      concern_user_count: 295818,
+      status: 1
+    },
+    {
+      tag_id: 6,
+      tag_name: 'Node.js',
+      tag_url: 'frontend',
+      rank: 0,
+      back_ground: 'https://lc-mhke0kuv.cn-n1.lcfile.com/8c95587526f346c0.png',
+      post_article_count: 12896,
+      concern_user_count: 295818,
+      status: 1
+    },
+    {
+      tag_id: 7,
+      tag_name: 'Webpack',
+      tag_url: 'frontend',
+      rank: 0,
+      back_ground: 'https://lc-mhke0kuv.cn-n1.lcfile.com/8c95587526f346c0.png',
+      post_article_count: 12896,
+      concern_user_count: 295818,
+      status: 1
+    }
+  ]
