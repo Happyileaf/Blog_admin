@@ -160,8 +160,8 @@
     <pagination
       v-show="total > 0"
       :total="total"
-      :page.sync="searchQuery.page"
-      :limit.sync="searchQuery.limit"
+      :page.sync="searchQuery.pageNum"
+      :limit.sync="searchQuery.pageSize"
       @pagination="getList"
     />
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
@@ -264,8 +264,8 @@ export default {
       total: 0,
       listLoading: true,
       searchQuery: {
-        page: 1,
-        limit: 20
+        pageNum: 1,
+        pageSize: 20
       },
       searchQueryCopy: {},
       articleCategoryOptions: ARTICLE_CATEGORY,
@@ -323,7 +323,7 @@ export default {
     },
     handleSearch() {
       this.searchQueryCopy = { ...this.searchQuery }
-      this.searchQuery.page = 1
+      this.searchQuery.pageNum = 1
       this.getList()
     },
     handleModifyStatus(row, status) {

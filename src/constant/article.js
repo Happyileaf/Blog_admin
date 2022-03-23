@@ -142,6 +142,8 @@ export const ARTICLE_UNIT = {
   brief_content:
     '「这是我参与2022首次更文挑战的第1天，活动详情查看：2022首次更文挑战」。 Node 包，Npm，搜索包的过程 Node的生态系统中，各种各样的模块，包给我们的开发带来了非常多的便利。最早学习v',
   content: 'Node 包，Npm，包的搜索过程',
+  visible_level: 0,
+  view_count: 1,
   ctime: '1643102315',
   mtime: '1643103992',
   rtime: '1643103992',

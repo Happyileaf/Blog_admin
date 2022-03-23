@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-03-03 10:18:36
- * @LastEditTime: 2022-03-05 21:04:32
+ * @LastEditTime: 2022-03-22 17:38:10
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \Blog_admin\src\api\tag.js
@@ -16,7 +16,7 @@ import request from '@/utils/request'
  */
 export function fetchTagList(query) {
   return request({
-    url: `/vue-element-admin/Tag/detail`,
+    url: `/blogServer/tag/fetchList`,
     method: `get`,
     params: query
   })
@@ -29,7 +29,7 @@ export function fetchTagList(query) {
  */
 export function fetchTag(id) {
   return request({
-    url: `/vue-element-admin/Tag/detail`,
+    url: `/blogServer/tag/fetchTag`,
     method: `get`,
     params: { id }
   })
@@ -42,7 +42,7 @@ export function fetchTag(id) {
  */
 export function createTag(data) {
   return request({
-    url: `/vue-element-admin/Tag/create`,
+    url: `/blogServer/tag/create`,
     method: `post`,
     data
   })
@@ -55,7 +55,7 @@ export function createTag(data) {
  */
 export function updateTag(data) {
   return request({
-    url: `/vue-element-admin/Tag/update`,
+    url: `/blogServer/tag/update`,
     method: `post`,
     data
   })
@@ -68,7 +68,7 @@ export function updateTag(data) {
  */
 export function activateOrFreezeTag(data) {
   return request({
-    url: `/vue-element-admin/Category/update`,
+    url: `/blogServer/tag/activateOrFreeze`,
     method: `post`,
     data
   })
@@ -81,7 +81,7 @@ export function activateOrFreezeTag(data) {
  */
 export function deleteTag(id) {
   return request({
-    url: `/vue-element-admin/article/update/${id}`,
+    url: `/blogServer/tag/delete/${id}`,
     method: `delete`
   })
 }

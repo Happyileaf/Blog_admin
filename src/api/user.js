@@ -1,8 +1,16 @@
 import request from '@/utils/request'
 
+export function register(data) {
+  return request({
+    url: '/blogServer/user/register',
+    method: 'post',
+    data
+  })
+}
+
 export function login(data) {
   return request({
-    url: '/vue-element-admin/user/login',
+    url: '/blogServer/user/login',
     method: 'post',
     data
   })
@@ -10,14 +18,14 @@ export function login(data) {
 
 export function logout() {
   return request({
-    url: '/vue-element-admin/user/logout',
+    url: '/blogServer/user/logout',
     method: 'post'
   })
 }
 
 export function getInfo(token) {
   return request({
-    url: '/vue-element-admin/user/info',
+    url: '/blogServer/user/info',
     method: 'get',
     params: { token }
   })
@@ -25,7 +33,7 @@ export function getInfo(token) {
 
 export function updataInfo(data) {
   return request({
-    url: '/vue-element-admin/user/login',
+    url: '/blogServer/user/login',
     method: 'post',
     data
   })

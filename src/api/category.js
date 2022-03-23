@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-03-03 10:18:30
- * @LastEditTime: 2022-03-05 21:03:42
+ * @LastEditTime: 2022-03-22 17:34:09
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \Blog_admin\src\api\category.js
@@ -16,7 +16,7 @@ import request from '@/utils/request'
  */
 export function fetchCategoryList(query) {
   return request({
-    url: `/vue-element-admin/Category/detail`,
+    url: `/blogServer/category/fetchList`,
     method: `get`,
     params: query
   })
@@ -29,7 +29,7 @@ export function fetchCategoryList(query) {
  */
 export function fetchCategory(id) {
   return request({
-    url: `/vue-element-admin/Category/detail`,
+    url: `/blogServer/category/fetchCategory`,
     method: `get`,
     params: { id }
   })
@@ -42,7 +42,7 @@ export function fetchCategory(id) {
  */
 export function createCategory(data) {
   return request({
-    url: `/vue-element-admin/Category/create`,
+    url: `/blogServer/category/create`,
     method: `post`,
     data
   })
@@ -55,7 +55,7 @@ export function createCategory(data) {
  */
 export function updateCategory(data) {
   return request({
-    url: `/vue-element-admin/Category/update`,
+    url: `/blogServer/category/update`,
     method: `post`,
     data
   })
@@ -68,7 +68,7 @@ export function updateCategory(data) {
  */
 export function activateOrFreezeCategory(data) {
   return request({
-    url: `/vue-element-admin/Category/update`,
+    url: `/blogServer/category/activateOrFreeze`,
     method: `post`,
     data
   })
@@ -81,7 +81,7 @@ export function activateOrFreezeCategory(data) {
  */
 export function deleteCategory(id) {
   return request({
-    url: `/vue-element-admin/article/update/${id}`,
+    url: `/blogServer/category/delete/${id}`,
     method: `delete`
   })
 }
