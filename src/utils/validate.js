@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2022-02-26 19:20:13
+ * @LastEditTime: 2022-03-23 18:36:43
+ * @LastEditors: your name
+ * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ * @FilePath: \Blog_admin\src\utils\validate.js
+ */
 /**
  * Created by PanJiaChen on 16/11/18.
  */
@@ -16,7 +24,7 @@ export function isExternal(path) {
  */
 export function validUsername(str) {
   const valid_map = ['admin', 'editor']
-  return valid_map.indexOf(str.trim()) >= 0
+  return valid_map.indexOf(str.trim()) >= 0 || 1
 }
 
 /**

@@ -1,6 +1,7 @@
 import { login, logout, getInfo, updataInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import router, { resetRouter } from '@/router'
+import { verify } from '@/utils/token'
 
 const state = {
   token: getToken(),
@@ -21,26 +22,37 @@ const mutations = {
   SET_TOKEN: (state, token) => {
     state.token = token
   },
-  SET_INTRODUCTION: (state, introduction) => {
-    state.introduction = introduction
+  SET_USERID: (state, token) => {
+    state.token = token
   },
   SET_USERNAME: (state, name) => {
     state.name = name
   },
-  SET_AVATAR: (state, avatar) => {
-    state.avatar = avatar
-  },
   SET_ROLES: (state, roles) => {
     state.roles = roles
   },
+  SET_EMIAL: (state, email) => {
+    state.email = email
+  },
+  SET_STATUS: (state, email) => {
+    state.email = email
+  },
+
+  SET_INTRODUCTION: (state, introduction) => {
+    state.introduction = introduction
+  },
+  SET_AVATAR: (state, avatar) => {
+    state.avatar = avatar
+  },
+
   SET_COMPANY: (state, company) => {
     state.company = company
   },
   SET_LOCATION: (state, location) => {
     state.location = location
   },
-  SET_EMIAL: (state, emai) => {
-    state.emai = emai
+  SET_EMIAL: (state, email) => {
+    state.email = email
   },
   SET_WEBSITE: (state, website) => {
     state.website = website
@@ -62,9 +74,17 @@ const actions = {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
       login({ user_name: username.trim(), password: password }).then(response => {
-        const { data } = response
-        commit('SET_TOKEN', data.result.token)
-        setToken(data.result.token)
+        const { res } = response
+        commit('SET_TOKEN', res.result.token)
+        setToken(res.result.token)
+        console.log('getToken()')
+        console.log(getToken())
+        const { user_id, user_name, roles, email, status } = verify(res.result.token)
+        commit('SET_USERID', user_id)
+        commit('SET_USERNAME', user_name)
+        commit('SET_ROLES', roles)
+        commit('SET_EMIAL', email)
+        commit('SET_STATUS', status)
         resolve()
       }).catch(error => {
         reject(error)
@@ -75,20 +95,14 @@ const actions = {
   // user logout
   logout({ commit, state, dispatch }) {
     return new Promise((resolve, reject) => {
-      logout(state.token).then(() => {
-        commit('SET_TOKEN', '')
-        commit('SET_ROLES', [])
-        removeToken()
-        resetRouter()
-
-        // reset visited views and cached views
-        // to fixed https://github.com/PanJiaChen/vue-element-admin/issues/2485
-        dispatch('tagsView/delAllViews', null, { root: true })
-
-        resolve()
-      }).catch(error => {
-        reject(error)
-      })
+      commit('SET_TOKEN', '')
+      commit('SET_ROLES', [])
+      removeToken()
+      resetRouter()
+      // reset visited views and cached views
+      // to fixed https://github.com/PanJiaChen/vue-element-admin/issues/2485
+      // dispatch('tagsView/delAllViews', null, { root: true })
+      resolve()
     })
   },
 

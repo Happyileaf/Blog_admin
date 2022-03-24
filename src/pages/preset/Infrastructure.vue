@@ -3,36 +3,35 @@
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>首页轮播图</span>
-        <el-button
-          style="float: right; padding: 3px 0"
-          type="text"
-        >操作按钮</el-button>
+        <el-button style="float: right; padding: 3px 0" type="text"
+          ></el-button
+        >
       </div>
       <div class="card-content carousel">
         <div class="carousel-wrap">
           <el-carousel :autoplay="false" :interval="5000" arrow="always">
             <el-carousel-item
-              v-for="item in carouselImgList"
-              :key="item"
+              v-for="(item, index) in carouselImgList"
+              :key="index"
               class="carousel-img-wrap"
             >
-              <img :src="item" alt="">
+              <img :src="item.picture_url" alt="" />
             </el-carousel-item>
           </el-carousel>
         </div>
         <div class="update-wrap">
           <div
             v-for="(item, index) in carouselImgList"
-            :key="item.key"
+            :key="index"
             class="content-wrap"
           >
-            <span>{{ item }}</span>
+            <span>{{ item.picture_url }}</span>
             <div>
               <el-button
                 type="danger"
                 icon="el-icon-delete"
                 circle
-                @click="deleteCarouselImg(index)"
+                @click="deleteCarouselImg(item.picture_id)"
               />
             </div>
           </div>
@@ -42,7 +41,7 @@
               class="add-input"
               placeholder="请输入图片地址..."
               autocomplete="off"
-            >
+            />
 
             <el-button
               type="primary"
@@ -57,21 +56,19 @@
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>导航推荐（恰饭专区）</span>
-        <el-button
-          style="float: right; padding: 3px 0"
-          type="text"
-        >操作按钮</el-button>
+        <el-button style="float: right; padding: 3px 0" type="text"
+          ></el-button
+        >
       </div>
       <div class="card-content recommendation-nav">
         <div class="recommendation-nav-wrap">
           <a
             v-for="(item, index) in recommendationNavList"
             :key="index"
-            :href="item.url"
-          ><img
-            :src="item.logo"
-            alt=""
-          ></a>
+            :href="item.nav_url"
+            target="_blank"
+            ><img :src="item.nav_logo" alt=""
+          /></a>
         </div>
         <div class="update-wrap">
           <div
@@ -79,55 +76,58 @@
             :key="index"
             class="content-wrap"
           >
-            <span><span>{{ item.name }}</span><span>{{ item.url }}</span></span>
+            <span
+              ><span>{{ item.nav_name }}</span
+              ><span>{{ item.nav_url }}</span></span
+            >
             <div>
               <el-button
                 type="danger"
                 icon="el-icon-delete"
                 circle
-                @click="deleteRecommendationNavImg(index)"
+                @click="deleteRecommendationNav(item.nav_id)"
               />
             </div>
           </div>
           <div class="add-wrap">
             <div>
               <input
-                v-model="recommendationNav.name"
+                v-model="recommendationNav.nav_name"
                 class="add-input"
                 placeholder="请输入名称..."
                 autocomplete="off"
-              >
+              />
               <input
-                v-model="recommendationNav.url"
+                v-model="recommendationNav.nav_url"
                 class="add-input"
                 placeholder="请输入URL..."
                 autocomplete="off"
-              >
+              />
               <input
-                v-model="recommendationNav.logo"
+                v-model="recommendationNav.nav_logo"
                 class="add-input"
                 placeholder="请输入Logo..."
                 autocomplete="off"
-              >
+              />
               <input
-                v-model="recommendationNav.intro"
+                v-model="recommendationNav.nav_intro"
                 class="add-input"
                 placeholder="请输入介绍..."
                 autocomplete="off"
-              >
+              />
               <input
-                v-model="recommendationNav.type"
+                v-model="recommendationNav.nav_type"
                 class="add-input"
                 placeholder="请输入类型..."
                 autocomplete="off"
-              >
+              />
             </div>
 
             <el-button
               type="primary"
               icon="el-icon-edit"
               circle
-              @click="addRecommendationNavImg"
+              @click="addRecommendationNav"
             />
           </div>
         </div>
@@ -137,85 +137,98 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import { INDEX_PAGE_CAROUSEL_IMG, RECOMMENDATION_NAV } from '@/constant/preset'
+import { mapGetters } from "vuex";
+import { INDEX_PAGE_CAROUSEL_IMG, RECOMMENDATION_NAV } from "@/constant/preset";
 
 import {
   fetchCarouselImgList,
-  addCarouselImg,
+  createCarouselImg,
   deleteCarouselImg,
   fetchRecommendationNavList,
-  addRecommendationNav,
-  deleteRecommendationNav
-} from '@/api/preset'
+  createRecommendationNav,
+  deleteRecommendationNav,
+} from "@/api/preset";
 
 export default {
-  name: 'Profile',
+  name: "Profile",
   components: {},
   data() {
     return {
       user: {},
-      activeTab: 'activity',
+      activeTab: "activity",
       carouselImgList: INDEX_PAGE_CAROUSEL_IMG,
-      carouselImg: '',
+      carouselImg: "",
       recommendationNavList: RECOMMENDATION_NAV,
-      recommendationNav: {}
-    }
+      recommendationNav: {},
+    };
   },
   computed: {
-    ...mapGetters([])
+    ...mapGetters([]),
   },
   created() {
-    this.getData()
+    this.getData();
   },
   methods: {
-    getCarouselImg() {
-      const { res, err } = fetchCarouselImgList()
-      if (res || 1) {
-        this.carouselImgList = INDEX_PAGE_CAROUSEL_IMG
+    async getCarouselImg() {
+      const { res, err } = await fetchCarouselImgList();
+      if (res) {
+        console.log(res);
+        this.carouselImgList = res.result.list;
       }
     },
-    getRecommendationNav() {
-      const { res, err } = fetchRecommendationNavList()
-      if (res || 1) {
-        this.recommendationNavList = RECOMMENDATION_NAV
+    async getRecommendationNav() {
+      const { res, err } = await fetchRecommendationNavList();
+      if (res) {
+        console.log(res);
+        this.recommendationNavList = res.result.list;
       }
     },
     getData() {
-      this.getCarouselImg()
-      this.getRecommendationNav()
+      this.getCarouselImg();
+      this.getRecommendationNav();
     },
-    addCarouselImg() {
-      if (!this.carouselImg) return
-      const { res, err } = addCarouselImg()
-      if (res || 1) {
-        this.carouselImgList.push(this.carouselImg)
-        this.carouselImg = ''
+    async addCarouselImg() {
+      if (!this.carouselImg) return;
+      const { res, err } = await createCarouselImg({
+        picture_url: this.carouselImg,
+      });
+      if (res) {
+        console.log(res);
+        this.getCarouselImg();
+        this.carouselImg = "";
       }
     },
-    deleteCarouselImg(id) {
-      const { res, err } = deleteCarouselImg(id)
-      if (res || 1) {
-        this.carouselImgList.splice(id, 1)
+    async deleteCarouselImg(id) {
+      const { res, err } = await deleteCarouselImg(id);
+      if (res) {
+        console.log(res);
+        this.getCarouselImg();
       }
     },
-    addRecommendationNavImg() {
-      const { name, url, logo, intro, type } = this.recommendationNav
-      if (!name || !url || !logo || !intro || !type) return
-      const { res, err } = addRecommendationNav()
-      if (res || 1) {
-        this.recommendationNavList.push(this.recommendationNav)
-        this.recommendationNav = {}
+    async addRecommendationNav() {
+      const { nav_name, nav_url, nav_logo, nav_intro, nav_type } =
+        this.recommendationNav;
+      if (!nav_name || !nav_url || !nav_logo || !nav_intro || !nav_type) return;
+      const { res, err } = await createRecommendationNav({
+        nav_name,
+        nav_url,
+        nav_logo,
+        nav_intro,
+        nav_type,
+      });
+      if (res) {
+        this.getRecommendationNav();
+        this.recommendationNav = {};
       }
     },
-    deleteRecommendationNavImg(id) {
-      const { res, err } = deleteRecommendationNav(id)
-      if (res || 1) {
-        this.recommendationNavList.splice(id, 1)
+    async deleteRecommendationNav(id) {
+      const { res, err } = await deleteRecommendationNav(id);
+      if (res) {
+        this.getRecommendationNav();
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
