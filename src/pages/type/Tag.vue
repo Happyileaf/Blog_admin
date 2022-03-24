@@ -153,8 +153,8 @@
     <pagination
       v-show="total > 0"
       :total="total"
-      :page.sync="searchQuery.page"
-      :limit.sync="searchQuery.limit"
+      :page.sync="searchQuery.pageNum"
+      :limit.sync="searchQuery.pageSize"
       @pagination="getList"
     />
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
@@ -257,8 +257,8 @@ export default {
       total: 0,
       listLoading: true,
       searchQuery: {
-        page: 1,
-        limit: 20
+        pageNum: 1,
+        pageSize: 20
       },
       searchQueryCopy: {},
       articleCategoryOptions: ARTICLE_CATEGORY,
@@ -279,7 +279,7 @@ export default {
       },
       rules: {
         tag_name: [
-          { required: true, message: 'username is required', trigger: 'blur' }
+          { required: true, message: 'tagname is required', trigger: 'blur' }
         ],
         tag_url: [
           { required: true, message: 'roles is required', trigger: 'blur' }
@@ -306,26 +306,28 @@ export default {
     this.getList()
   },
   methods: {
-    getList() {
+    async getList() {
       this.listLoading = true
       console.log(this.searchQueryCopy)
-      const { res } = fetchTagList(this.searchQueryCopy)
-      if (res || 1) {
+      const { res } = await fetchTagList(this.searchQueryCopy)
+      console.log(res)
+      if (res) {
+        this.list = res.result.list
         this.listLoading = false
       }
     },
     handleSearch() {
       this.searchQueryCopy = { ...this.searchQuery }
-      this.searchQuery.page = 1
+      this.searchQuery.pageNum = 1
       this.getList()
     },
-    handleModifyStatus(row, status) {
+    async handleModifyStatus(row, status) {
       const obj = {
-        user_id: row.user_id,
+        tag_id: row.tag_id,
         status: status
       }
-      const { res } = activateOrFreezeTag(obj)
-      if (res || 1) {
+      const { res } = await activateOrFreezeTag(obj)
+      if (res) {
         this.$message({
           message: '操作Success',
           type: 'success'
@@ -335,11 +337,11 @@ export default {
     },
     resetTemp() {
       this.temp = {
-        user_id: undefined,
-        username: '',
-        roles: [],
-        email: '',
-        introduction: '',
+        tag_id: undefined,
+        tag_name: '',
+        tag_url: '',
+        rank: undefined,
+        back_ground: '',
         status: undefined
       }
     },
@@ -352,10 +354,10 @@ export default {
       })
     },
     createData() {
-      this.$refs['dataForm'].validate((valid) => {
+      this.$refs['dataForm'].validate(async(valid) => {
         if (valid) {
-          const { res, err } = createTag(this.temp)
-          if (res || 1) {
+          const { res, err } = await createTag(this.temp)
+          if (res) {
             this.list.unshift(this.temp)
             this.dialogFormVisible = false
             this.$notify({
@@ -378,11 +380,11 @@ export default {
       })
     },
     updateData() {
-      this.$refs['dataForm'].validate((valid) => {
+      this.$refs['dataForm'].validate(async(valid) => {
         if (valid) {
           const tempData = { ...this.temp }
-          const { res, err } = updateTag(tempData)
-          if (res || 1) {
+          const { res, err } = await updateTag(tempData)
+          if (res) {
             const index = this.list.findIndex((v) => v.id === this.temp.id)
             this.list.splice(index, 1, this.temp)
             this.dialogFormVisible = false
@@ -396,9 +398,9 @@ export default {
         }
       })
     },
-    handleDelete(row, index) {
-      const { res } = deleteTag(row.user_id)
-      if (res || 1) {
+    async handleDelete(row, index) {
+      const { res } = await deleteTag(row.tag_id)
+      if (res) {
         this.$notify({
           title: 'Success',
           message: 'Delete Successfully',

@@ -93,9 +93,7 @@
       </el-table-column>
       <el-table-column label="排序" prop="rank" width="200" align="center">
         <template slot-scope="{ row }">
-          {{
-            row.rank
-          }}
+          {{ row.rank }}
         </template>
       </el-table-column>
       <el-table-column
@@ -313,11 +311,13 @@ export default {
     this.getList()
   },
   methods: {
-    getList() {
+    async getList() {
       this.listLoading = true
       console.log(this.searchQueryCopy)
-      const { res } = fetchCategoryList(this.searchQueryCopy)
-      if (res || 1) {
+      const { res, err } = await fetchCategoryList(this.searchQueryCopy)
+      console.log(res)
+      if (res) {
+        this.list = res.result.list
         this.listLoading = false
       }
     },
@@ -326,27 +326,28 @@ export default {
       this.searchQuery.pageNum = 1
       this.getList()
     },
-    handleModifyStatus(row, status) {
+    async handleModifyStatus(row, status) {
       const obj = {
-        user_id: row.user_id,
+        category_id: row.category_id,
         status: status
       }
-      const { res } = activateOrFreezeCategory(obj)
-      if (res || 1) {
+      const { res, err } = await activateOrFreezeCategory(obj)
+      if (res) {
         this.$message({
           message: '操作Success',
           type: 'success'
         })
         row.status = status
+        this.getList()
       }
     },
     resetTemp() {
       this.temp = {
-        user_id: undefined,
-        username: '',
-        roles: [],
-        email: '',
-        introduction: '',
+        category_id: undefined,
+        category_name: '',
+        category_url: '',
+        rank: undefined,
+        back_ground: '',
         status: undefined
       }
     },
@@ -359,12 +360,14 @@ export default {
       })
     },
     createData() {
-      this.$refs['dataForm'].validate((valid) => {
+      this.$refs['dataForm'].validate(async(valid) => {
         if (valid) {
-          const { res, err } = createCategory(this.temp)
-          if (res || 1) {
+          console.log(this.temp)
+          const { res, err } = await createCategory(this.temp)
+          if (res) {
             this.list.unshift(this.temp)
             this.dialogFormVisible = false
+            console.log(this.dialogFormVisible)
             this.$notify({
               title: 'Success',
               message: 'Created Successfully',
@@ -385,11 +388,11 @@ export default {
       })
     },
     updateData() {
-      this.$refs['dataForm'].validate((valid) => {
+      this.$refs['dataForm'].validate(async(valid) => {
         if (valid) {
           const tempData = { ...this.temp }
-          const { res, err } = updateCategory(tempData)
-          if (res || 1) {
+          const { res, err } = await updateCategory(tempData)
+          if (res) {
             const index = this.list.findIndex((v) => v.id === this.temp.id)
             this.list.splice(index, 1, this.temp)
             this.dialogFormVisible = false
@@ -399,13 +402,14 @@ export default {
               type: 'success',
               duration: 2000
             })
+            this.getList()
           }
         }
       })
     },
-    handleDelete(row, index) {
-      const { res } = deleteCategory(row.user_id)
-      if (res || 1) {
+    async handleDelete(row, index) {
+      const { res, err } = await deleteCategory(row.category_id)
+      if (res) {
         this.$notify({
           title: 'Success',
           message: 'Delete Successfully',
@@ -413,6 +417,7 @@ export default {
           duration: 2000
         })
         this.list.splice(index, 1)
+        this.getList()
       }
     },
     handleDownload() {
