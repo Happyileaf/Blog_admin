@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-03-03 15:46:18
- * @LastEditTime: 2022-03-05 19:53:03
+ * @LastEditTime: 2022-03-25 21:05:08
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \Blog_admin\src\api\user-manage.js
@@ -16,7 +16,7 @@ import request from '@/utils/request'
  */
 export function fetchUserList(query) {
   return request({
-    url: `/vue-element-admin/User/detail`,
+    url: `/blogServer/userManage/fetchList`,
     method: `get`,
     params: query
   })
@@ -29,7 +29,7 @@ export function fetchUserList(query) {
  */
 export function fetchUser(id) {
   return request({
-    url: `/vue-element-admin/User/detail`,
+    url: `/blogServer/userManage/fetchUser`,
     method: `get`,
     params: { id }
   })
@@ -42,7 +42,7 @@ export function fetchUser(id) {
  */
 export function createUser(data) {
   return request({
-    url: `/vue-element-admin/User/create`,
+    url: `/blogServer/userManage/create`,
     method: `post`,
     data
   })
@@ -55,7 +55,7 @@ export function createUser(data) {
  */
 export function updateUser(data) {
   return request({
-    url: `/vue-element-admin/User/update`,
+    url: `/blogServer/userManage/update`,
     method: `post`,
     data
   })
@@ -68,7 +68,7 @@ export function updateUser(data) {
  */
 export function activateOrFreezeUser(data) {
   return request({
-    url: `/vue-element-admin/User/update`,
+    url: `/blogServer/userManage/activateOrFreeze`,
     method: `post`,
     data
   })
@@ -81,7 +81,7 @@ export function activateOrFreezeUser(data) {
  */
 export function deleteUser(id) {
   return request({
-    url: `/vue-element-admin/article/update/${id}`,
+    url: `/blogServer/userManage/delete/${id}`,
     method: `delete`
   })
 }
