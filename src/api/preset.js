@@ -43,7 +43,7 @@ export function createCarouselImg(data) {
 export function deleteCarouselImg(picture_id) {
   return request({
     url: `/blogServer/preset/deletePicture/${picture_id}`,
-    method: `delete`,
+    method: `delete`
   })
 }
 
@@ -52,7 +52,7 @@ export function deleteCarouselImg(picture_id) {
  * @param {*} query
  * @return {*}
  */
- export function fetchRecommendationNavList(query) {
+export function fetchRecommendationNavList(query) {
   return request({
     url: `/blogServer/preset/fetchNavList`,
     method: `get`,
@@ -81,6 +81,6 @@ export function createRecommendationNav(data) {
 export function deleteRecommendationNav(nav_id) {
   return request({
     url: `/blogServer/preset/deleteNav/${nav_id}`,
-    method: `delete`,
+    method: `delete`
   })
 }

@@ -3,9 +3,10 @@
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>首页轮播图</span>
-        <el-button style="float: right; padding: 3px 0" type="text"
-          ></el-button
-        >
+        <el-button
+          style="float: right; padding: 3px 0"
+          type="text"
+        />
       </div>
       <div class="card-content carousel">
         <div class="carousel-wrap">
@@ -15,7 +16,7 @@
               :key="index"
               class="carousel-img-wrap"
             >
-              <img :src="item.picture_url" alt="" />
+              <img :src="item.picture_url" alt="">
             </el-carousel-item>
           </el-carousel>
         </div>
@@ -41,7 +42,7 @@
               class="add-input"
               placeholder="请输入图片地址..."
               autocomplete="off"
-            />
+            >
 
             <el-button
               type="primary"
@@ -56,9 +57,10 @@
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>导航推荐（恰饭专区）</span>
-        <el-button style="float: right; padding: 3px 0" type="text"
-          ></el-button
-        >
+        <el-button
+          style="float: right; padding: 3px 0"
+          type="text"
+        />
       </div>
       <div class="card-content recommendation-nav">
         <div class="recommendation-nav-wrap">
@@ -67,8 +69,10 @@
             :key="index"
             :href="item.nav_url"
             target="_blank"
-            ><img :src="item.nav_logo" alt=""
-          /></a>
+          ><img
+            :src="item.nav_logo"
+            alt=""
+          ></a>
         </div>
         <div class="update-wrap">
           <div
@@ -76,10 +80,7 @@
             :key="index"
             class="content-wrap"
           >
-            <span
-              ><span>{{ item.nav_name }}</span
-              ><span>{{ item.nav_url }}</span></span
-            >
+            <span><span>{{ item.nav_name }}</span><span>{{ item.nav_url }}</span></span>
             <div>
               <el-button
                 type="danger"
@@ -96,31 +97,31 @@
                 class="add-input"
                 placeholder="请输入名称..."
                 autocomplete="off"
-              />
+              >
               <input
                 v-model="recommendationNav.nav_url"
                 class="add-input"
                 placeholder="请输入URL..."
                 autocomplete="off"
-              />
+              >
               <input
                 v-model="recommendationNav.nav_logo"
                 class="add-input"
                 placeholder="请输入Logo..."
                 autocomplete="off"
-              />
+              >
               <input
                 v-model="recommendationNav.nav_intro"
                 class="add-input"
                 placeholder="请输入介绍..."
                 autocomplete="off"
-              />
+              >
               <input
                 v-model="recommendationNav.nav_type"
                 class="add-input"
                 placeholder="请输入类型..."
                 autocomplete="off"
-              />
+              >
             </div>
 
             <el-button
@@ -137,8 +138,8 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import { INDEX_PAGE_CAROUSEL_IMG, RECOMMENDATION_NAV } from "@/constant/preset";
+import { mapGetters } from 'vuex'
+import { INDEX_PAGE_CAROUSEL_IMG, RECOMMENDATION_NAV } from '@/constant/preset'
 
 import {
   fetchCarouselImgList,
@@ -146,89 +147,89 @@ import {
   deleteCarouselImg,
   fetchRecommendationNavList,
   createRecommendationNav,
-  deleteRecommendationNav,
-} from "@/api/preset";
+  deleteRecommendationNav
+} from '@/api/preset'
 
 export default {
-  name: "Profile",
+  name: 'Profile',
   components: {},
   data() {
     return {
       user: {},
-      activeTab: "activity",
+      activeTab: 'activity',
       carouselImgList: INDEX_PAGE_CAROUSEL_IMG,
-      carouselImg: "",
+      carouselImg: '',
       recommendationNavList: RECOMMENDATION_NAV,
-      recommendationNav: {},
-    };
+      recommendationNav: {}
+    }
   },
   computed: {
-    ...mapGetters([]),
+    ...mapGetters([])
   },
   created() {
-    this.getData();
+    this.getData()
   },
   methods: {
     async getCarouselImg() {
-      const { res, err } = await fetchCarouselImgList();
+      const { res, err } = await fetchCarouselImgList()
       if (res) {
-        console.log(res);
-        this.carouselImgList = res.result.list;
+        console.log(res)
+        this.carouselImgList = res.result.list
       }
     },
     async getRecommendationNav() {
-      const { res, err } = await fetchRecommendationNavList();
+      const { res, err } = await fetchRecommendationNavList()
       if (res) {
-        console.log(res);
-        this.recommendationNavList = res.result.list;
+        console.log(res)
+        this.recommendationNavList = res.result.list
       }
     },
     getData() {
-      this.getCarouselImg();
-      this.getRecommendationNav();
+      this.getCarouselImg()
+      this.getRecommendationNav()
     },
     async addCarouselImg() {
-      if (!this.carouselImg) return;
+      if (!this.carouselImg) return
       const { res, err } = await createCarouselImg({
-        picture_url: this.carouselImg,
-      });
+        picture_url: this.carouselImg
+      })
       if (res) {
-        console.log(res);
-        this.getCarouselImg();
-        this.carouselImg = "";
+        console.log(res)
+        this.getCarouselImg()
+        this.carouselImg = ''
       }
     },
     async deleteCarouselImg(id) {
-      const { res, err } = await deleteCarouselImg(id);
+      const { res, err } = await deleteCarouselImg(id)
       if (res) {
-        console.log(res);
-        this.getCarouselImg();
+        console.log(res)
+        this.getCarouselImg()
       }
     },
     async addRecommendationNav() {
       const { nav_name, nav_url, nav_logo, nav_intro, nav_type } =
-        this.recommendationNav;
-      if (!nav_name || !nav_url || !nav_logo || !nav_intro || !nav_type) return;
+        this.recommendationNav
+      if (!nav_name || !nav_url || !nav_logo || !nav_intro || !nav_type) return
       const { res, err } = await createRecommendationNav({
         nav_name,
         nav_url,
         nav_logo,
         nav_intro,
-        nav_type,
-      });
+        nav_type
+      })
       if (res) {
-        this.getRecommendationNav();
-        this.recommendationNav = {};
+        this.getRecommendationNav()
+        this.recommendationNav = {}
       }
     },
     async deleteRecommendationNav(id) {
-      const { res, err } = await deleteRecommendationNav(id);
+      const { res, err } = await deleteRecommendationNav(id)
       if (res) {
-        this.getRecommendationNav();
+        this.getRecommendationNav()
       }
-    },
-  },
-};
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
