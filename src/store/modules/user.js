@@ -5,6 +5,7 @@ import { verify } from '@/utils/token'
 
 const state = {
   token: getToken(),
+  user_id: undefined,
   username: '',
   avatar: '',
   introduction: '',
@@ -22,8 +23,8 @@ const mutations = {
   SET_TOKEN: (state, token) => {
     state.token = token
   },
-  SET_USERID: (state, token) => {
-    state.token = token
+  SET_USERID: (state, user_id) => {
+    state.user_id = user_id
   },
   SET_USERNAME: (state, name) => {
     state.name = name

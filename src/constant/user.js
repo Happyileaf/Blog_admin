@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-03-04 15:31:18
- * @LastEditTime: 2022-03-05 19:56:26
+ * @LastEditTime: 2022-03-27 21:23:50
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \Blog_admin\src\constant\user.js
@@ -30,7 +30,7 @@ export const socialAccount = [
   { platform: 'WeChat', account: '123456', avatar: 'https://img2.baidu.com/it/u=2251201040,4120245779&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500' },
   { platform: 'Tictok', account: '123456', avatar: 'https://img2.baidu.com/it/u=2251201040,4120245779&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500' }]
 export const userInfo = [{
-  user_id: '1',
+  user_id: 20,
   username: 'Happy',
   roles: ['user'],
   status: 1,

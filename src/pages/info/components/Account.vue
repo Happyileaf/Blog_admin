@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-03-04 09:38:12
- * @LastEditTime: 2022-03-05 16:19:03
+ * @LastEditTime: 2022-03-28 16:33:44
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \Blog_admin\src\pages\info\components\Account.vue
@@ -9,7 +9,7 @@
 <template>
   <el-form label-width="80px">
     <el-form-item label="Name">
-      <el-input v-model.trim="userInfo.username" />
+      <el-input v-model.trim="userInfo.nick_name" />
     </el-form-item>
     <el-form-item label="Intro">
       <el-input v-model.trim="userInfo.introduction" />
@@ -30,7 +30,6 @@
       <el-button type="primary" @click="submit">Update</el-button>
       <el-button type="primary" @click="show = true">MoreEdit</el-button>
     </el-form-item>
-    {{ this.userInfo }}
 
     <MoreEdit
       v-model="show"
@@ -44,6 +43,7 @@
 <script>
 import MoreEdit from './MoreEdit.vue'
 import { updateInfo } from '@/api/user'
+import { updateUserInfo } from '@/api/userInfo'
 export default {
   components: {
     MoreEdit
@@ -70,19 +70,27 @@ export default {
       return { ...this.user }
     }
   },
+  watch: {
+    user: function(newValue, oldValue) {
+      this.userInfo = newValue
+    }
+  },
   created() {
     this.userInfo = { ...this.user }
   },
   methods: {
-    submit() {
+    async submit() {
       const query = { ...this.userInfo }
-      const { res, err } = this.$store.dispatch('user/getInfo')
-      if (res || 1) {
+      console.log('this.user')
+      console.log(query)
+      const { res, err } = await updateUserInfo(query)
+      if (res) {
         this.$message({
           message: 'User information has been updated successfully',
           type: 'success',
           duration: 5 * 1000
         })
+        this.$emit('update')
       }
     },
     mergeInfo(query) {

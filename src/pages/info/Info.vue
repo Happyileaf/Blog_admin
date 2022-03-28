@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2022-03-04 09:38:12
- * @LastEditTime: 2022-03-05 16:24:22
- * @LastEditors: your name
+ * @LastEditTime: 2022-03-28 16:34:41
+ * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \Blog_admin\src\pages\info\Info.vue
 -->
@@ -21,12 +21,11 @@
           <el-card>
             <el-tabs v-model="activeTab">
               <el-tab-pane label="Account" name="account">
-                <account :user="user" />
+                <account :user="user" @update="getUser" />
               </el-tab-pane>
             </el-tabs>
           </el-card>
         </el-col>
-        {{ user }}
       </el-row>
     </div>
   </div>
@@ -40,6 +39,8 @@ import Account from './components/Account'
 
 import { userInfo } from '@/constant/user'
 
+import { fetchUserInfo, updateUserInfo } from '@/api/userInfo'
+
 export default {
   name: 'Profile',
   components: { UserCard, UserInfo, Account },
@@ -51,6 +52,7 @@ export default {
   },
   computed: {
     ...mapGetters([
+      'user_id',
       'username',
       'roles',
       'avatar',
@@ -68,7 +70,7 @@ export default {
     this.getUser()
   },
   methods: {
-    getUser() {
+    async getUser() {
       // this.user = {
       //   name: this.name,
       //   roles: this.roles,
@@ -81,9 +83,15 @@ export default {
       //   education: this.education,
       //   skills: this.skills,
       // };
-      this.user = {
-        ...userInfo[0]
-      }
+
+      const user_id = this.$store.state.user.user_id
+      const { res, err } = await fetchUserInfo({ user_id })
+      console.log(res.result.skills)
+      this.user = res.result
+
+      // this.user = {
+      //   ...userInfo[0]
+      // }
     }
   }
 }

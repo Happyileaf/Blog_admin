@@ -184,7 +184,16 @@ export default {
       }
     }
   },
+  watch: {
+    user: function(newValue, oldValue) {
+      this.socialAccount = [...this.user.socialAccount]
+      this.education = [...this.user.education]
+      this.skills = [...this.user.skills]
+    }
+  },
   created() {
+    console.log('user')
+    console.log(this.user)
     this.socialAccount = [...this.user.socialAccount]
     this.education = [...this.user.education]
     this.skills = [...this.user.skills]
@@ -205,7 +214,9 @@ export default {
         !this.socialAccount_platform ||
         !this.socialAccount_account ||
         !this.socialAccount_avatar
-      ) { return }
+      ) {
+        return
+      }
       this.socialAccount.push({
         platform: this.socialAccount_platform,
         account: this.socialAccount_account,
