@@ -9,7 +9,7 @@
         @keyup.enter.native="handleSearch"
       />
       <el-input
-        v-model="searchQuery.author"
+        v-model="searchQuery.user_id"
         placeholder="作者"
         style="width: 200px"
         class="filter-item"
@@ -108,7 +108,7 @@
       </el-table-column>
       <el-table-column label="作者" width="110" align="center">
         <template slot-scope="{ row }">
-          <span>{{ row.author_user_info.user_name }}</span>
+          <span>{{ row.user_info.user_name }}</span>
         </template>
       </el-table-column>
       <el-table-column label="分类" width="100" align="center">
@@ -132,14 +132,14 @@
       <el-table-column label="发布时间" width="100" align="center">
         <template slot-scope="{ row }">
           <span>{{
-            row.article_info.ctime | parseTime("{y}-{m}-{d} {h}:{i}")
+            row.article_info.create_time | parseTime("{y}-{m}-{d} {h}:{i}")
           }}</span>
         </template>
       </el-table-column>
       <el-table-column label="更新时间" width="100" align="center">
         <template slot-scope="{ row }">
           <span>{{
-            row.article_info.rtime | parseTime("{y}-{m}-{d} {h}:{i}")
+            row.article_info.update_time | parseTime("{y}-{m}-{d} {h}:{i}")
           }}</span>
         </template>
       </el-table-column>
@@ -190,8 +190,8 @@
     <pagination
       v-show="total > 0"
       :total="total"
-      :page.sync="searchQuery.page"
-      :limit.sync="searchQuery.limit"
+      :page.sync="searchQuery.pageNum"
+      :limit.sync="searchQuery.pageSize"
       @pagination="getList"
     />
   </div>
@@ -240,8 +240,8 @@ export default {
       total: 0,
       listLoading: true,
       searchQuery: {
-        page: 1,
-        limit: 20,
+        pageNum: 1,
+        pageSize: 20,
         importance: undefined,
         title: undefined,
         type: undefined,
@@ -289,16 +289,18 @@ export default {
     this.getList()
   },
   methods: {
-    getList() {
+    async getList() {
       this.listLoading = true
-      const { res } = fetchList(this.searchQueryCopy)
-      if (res || 1) {
+      const { res, err } = await fetchList(this.searchQueryCopy)
+      console.log(res)
+      if (res) {
+        this.list = res.result.list
         this.listLoading = false
       }
     },
     handleSearch() {
       this.searchQueryCopy = { ...this.searchQuery }
-      this.searchQuery.page = 1
+      this.searchQuery.pageNum = 1
       this.getList()
     },
     handleModifyStatus(row, status) {

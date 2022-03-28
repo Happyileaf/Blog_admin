@@ -35,8 +35,8 @@ const mutations = {
   SET_EMIAL: (state, email) => {
     state.email = email
   },
-  SET_STATUS: (state, email) => {
-    state.email = email
+  SET_STATUS: (state, status) => {
+    state.status = status
   },
 
   SET_INTRODUCTION: (state, introduction) => {
@@ -78,8 +78,6 @@ const actions = {
         const { res } = response
         commit('SET_TOKEN', res.result.token)
         setToken(res.result.token)
-        console.log('getToken()')
-        console.log(getToken())
         const { user_id, user_name, roles, email, status } = verify(res.result.token)
         commit('SET_USERID', user_id)
         commit('SET_USERNAME', user_name)

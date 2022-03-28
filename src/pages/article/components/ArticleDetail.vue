@@ -23,7 +23,7 @@
           <Tinymce ref="editor" v-model="postForm.content" :height="500" />
         </el-form-item> -->
         <el-form-item prop="content" style="margin-bottom: 30px padding:0">
-          <ByteMD />
+          <ByteMD @changeCentent="updateContent" />
         </el-form-item>
         <el-drawer
           title="发布"
@@ -124,12 +124,14 @@ import { validURL } from '@/utils/validate'
 import { fetchArticle, createArticle, updateArticle } from '@/api/article'
 import { searchUser } from '@/api/remote-search'
 
+import store from '@/store'
+
 import { ARTICLE_CATEGORY, ARTICLE_TAG } from '@/constant/type'
 import { ARTICLE_UNIT } from '@/constant/article'
 
 const defaultArticle = {
   article_id: '',
-  user_id: '',
+  user_id: 0,
   category_id: '',
   tag_ids: [],
   link_url: '',
@@ -221,6 +223,9 @@ export default {
       const id = this.$route.query && this.$route.query.article_id
       this.fetchData(id)
     }
+    console.log('store.getters.user_id')
+    console.log(this.$store.state.user.user_id)
+    console.log(store.getters.token)
   },
   methods: {
     fetchData(id) {
@@ -248,8 +253,12 @@ export default {
       if (!this.titleCheck() || !this.contentCheck()) {
         return
       }
-      const query = { ...this.postForm, status: 2 }
+      const query = { ...this.postForm, status: 2, user_id: 20 }
       const handler = !this.isEdit ? createArticle : updateArticle
+      console.log('query')
+      console.log(this.$store.getters.user_id)
+      console.log(query)
+
       const { res, err } = handler(query)
       if (res || 1) {
       }
@@ -320,6 +329,10 @@ export default {
         return false
       }
       return true
+    },
+    updateContent(value) {
+      this.postForm.content = value
+      console.log(this.postForm.content)
     }
   }
 }

@@ -34,6 +34,7 @@ export default {
   methods: {
     handleChange(v) {
       this.value = v
+      this.$emit('changeCentent', v)
     }
   }
 }
