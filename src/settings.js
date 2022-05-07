@@ -1,11 +1,11 @@
 module.exports = {
-  title: 'Vue Element Admin',
+  title: 'Blog Admin',
 
   /**
    * @type {boolean} true | false
    * @description Whether show the settings right-panel
    */
-  
+
   // 修改标记：关闭悬浮setting按钮
   showSettings: false,
 

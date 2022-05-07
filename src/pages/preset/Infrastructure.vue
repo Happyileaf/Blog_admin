@@ -56,7 +56,7 @@
     </el-card>
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <span>导航推荐（恰饭专区）</span>
+        <span>导航推荐</span>
         <el-button
           style="float: right; padding: 3px 0"
           type="text"

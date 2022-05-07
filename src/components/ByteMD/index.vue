@@ -28,8 +28,19 @@ const plugins = [
 
 export default {
   components: { Editor },
+  props: {
+    content: {
+      type: String
+    }
+  },
   data() {
     return { value: '', plugins }
+  },
+  watch: {
+  },
+  created() {
+    this.value = this.content
+    console.log(this.value)
   },
   methods: {
     handleChange(v) {

@@ -29,7 +29,7 @@
           :value="item.key"
         />
       </el-select>
-      <el-select
+      <!-- <el-select
         v-model="searchQuery.tags"
         placeholder="标签"
         clearable
@@ -42,7 +42,7 @@
           :label="item.display_name"
           :value="item.key"
         />
-      </el-select>
+      </el-select> -->
       <el-select
         v-model="searchQuery.status"
         placeholder="状态"
@@ -108,15 +108,12 @@
       </el-table-column>
       <el-table-column label="作者" width="110" align="center">
         <template slot-scope="{ row }">
-          <span>{{ row.user_info.user_name }}</span>
+          <span>{{ row.article_info.user_id }}</span>
         </template>
       </el-table-column>
       <el-table-column label="分类" width="100" align="center">
         <template slot-scope="{ row }">
-          <span class="link-type" @click="handleUpdate(row)">{{
-            row.title
-          }}</span>
-          <el-tag effect="dark">{{ row.category.category_name }}</el-tag>
+          <el-tag effect="dark">{{ row.category_info.category_name }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="标签" align="center" width="100">
@@ -124,7 +121,7 @@
           <span class="link-type" @click="handleUpdate(row)">{{
             row.title
           }}</span>
-          <div v-for="item in row.tags" :key="item.tag_id">
+          <div v-for="item in row.tags_info" :key="item.tag_id">
             <el-tag>{{ item.tag_name }}</el-tag>
           </div>
         </template>
@@ -132,21 +129,21 @@
       <el-table-column label="发布时间" width="100" align="center">
         <template slot-scope="{ row }">
           <span>{{
-            row.article_info.create_time | parseTime("{y}-{m}-{d} {h}:{i}")
+            row.article_info.create_time
           }}</span>
         </template>
       </el-table-column>
       <el-table-column label="更新时间" width="100" align="center">
         <template slot-scope="{ row }">
           <span>{{
-            row.article_info.update_time | parseTime("{y}-{m}-{d} {h}:{i}")
+            row.article_info.update_time
           }}</span>
         </template>
       </el-table-column>
       <el-table-column label="状态" class-name="status-col" width="100">
         <template slot-scope="{ row }">
-          <el-tag :type="row.status.push_status | statusFilter">
-            {{ row.status.push_status | articleStatusFilter }}
+          <el-tag :type="row.article_info.status | statusFilter">
+            {{ row.article_info.status | articleStatusFilter }}
           </el-tag>
         </template>
       </el-table-column>
@@ -161,7 +158,7 @@
             编辑
           </el-button>
           <el-button
-            v-if="row.status.push_status != 1"
+            v-if="row.article_info.status != 1"
             size="mini"
             type="success"
             @click="handleModifyStatus(row, 1)"
@@ -169,14 +166,14 @@
             发布
           </el-button>
           <el-button
-            v-if="row.status.push_status != 0"
+            v-if="row.article_info.status != 0"
             size="mini"
             @click="handleModifyStatus(row, 0)"
           >
             草稿
           </el-button>
           <el-button
-            v-if="row.status != 'deleted'"
+            v-if="row.article_info.status != 'deleted'"
             size="mini"
             type="danger"
             @click="handleDelete(row, $index)"
@@ -236,7 +233,7 @@ export default {
   data() {
     return {
       tableKey: 0,
-      list: ARTICLE_ITEM,
+      list: [],
       total: 0,
       listLoading: true,
       searchQuery: {
@@ -295,6 +292,8 @@ export default {
       console.log(res)
       if (res) {
         this.list = res.result.list
+        console.log('this.list')
+        console.log(this.list)
         this.listLoading = false
       }
     },
@@ -305,7 +304,7 @@ export default {
     },
     handleModifyStatus(row, status) {
       const obj = {
-        article_id: row.article_id,
+        article_id: row.article_info.article_id,
         status: status
       }
       const { res } = publishOrDraftArticle(obj)
@@ -314,7 +313,7 @@ export default {
           message: '操作Success',
           type: 'success'
         })
-        row.status.push_status = status
+        row.article_info.status = status
       }
     },
     resetTemp() {
@@ -334,11 +333,11 @@ export default {
     handleUpdate(row) {
       this.$router.push({
         path: '/article/issue',
-        query: { article_id: row.article_id }
+        query: { article_id: row.article_info.article_id }
       })
     },
     handleDelete(row, index) {
-      const { res } = deleteArticle(row.article_id)
+      const { res } = deleteArticle(row.article_info.article_id)
       if (res || 1) {
         this.$notify({
           title: 'Success',

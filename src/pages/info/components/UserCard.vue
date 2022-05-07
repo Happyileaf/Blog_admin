@@ -41,7 +41,7 @@
           <svg-icon icon-class="email" /><span>Company</span>
         </div>
         <div class="user-bio-section-body">
-          <div class="text-muted">{{ user.introduction }}</div>
+          <div class="text-muted">{{ user.company }}</div>
         </div>
       </div>
 

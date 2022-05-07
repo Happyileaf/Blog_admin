@@ -128,7 +128,7 @@ export const constantRoutes = [
 
   // homeRouter,
   dashboardRouter,
-  infoRouter,
+  // infoRouter,
   articleRouter,
   userRouter,
   categoryRouter,

@@ -1,3 +1,11 @@
+<!--
+ * @Author: your name
+ * @Date: 2022-02-26 19:20:13
+ * @LastEditTime: 2022-04-07 21:53:21
+ * @LastEditors: your name
+ * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ * @FilePath: \Blog_admin\src\layout\components\Sidebar\Logo.vue
+-->
 <template>
   <div class="sidebar-logo-container" :class="{'collapse':collapse}">
     <transition name="sidebarLogoFade">
@@ -24,7 +32,7 @@ export default {
   },
   data() {
     return {
-      title: 'Vue Element Admin',
+      title: 'Blog Admin',
       logo: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png'
     }
   }

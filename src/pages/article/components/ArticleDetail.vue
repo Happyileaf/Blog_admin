@@ -8,7 +8,7 @@
         placeholder="请输入文章标题..."
       >
       <div class="editor-btn">
-        <el-button type="primary" plain @click="draftArticle">存草稿</el-button>
+        <!-- <el-button type="primary" plain @click="draftArticle">存草稿</el-button> -->
         <el-button type="primary" @click="submitDialog = true">发布</el-button>
       </div>
     </div>
@@ -22,8 +22,9 @@
         <!-- <el-form-item prop="content" style="margin-bottom: 30px">
           <Tinymce ref="editor" v-model="postForm.content" :height="500" />
         </el-form-item> -->
+        <Viewer />
         <el-form-item prop="content" style="margin-bottom: 30px padding:0">
-          <ByteMD @changeCentent="updateContent" />
+          <ByteMD ref="editor" :content="postForm.content" @changeCentent="updateContent" />
         </el-form-item>
         <el-drawer
           title="发布"
@@ -71,7 +72,7 @@
                   />
                 </el-select>
               </el-form-item>
-              <el-form-item
+              <!-- <el-form-item
                 label="文章封面"
                 prop="imageUrl"
                 :label-width="formLabelWidth"
@@ -86,7 +87,7 @@
                   <img v-if="imageUrl" :src="imageUrl" class="avatar">
                   <i v-else class="el-icon-plus avatar-uploader-icon" />
                 </el-upload>
-              </el-form-item>
+              </el-form-item> -->
               <el-form-item
                 label="编辑摘要"
                 prop="brief_content"
@@ -125,7 +126,7 @@ import { fetchArticle, createArticle, updateArticle } from '@/api/article'
 import { searchUser } from '@/api/remote-search'
 
 import store from '@/store'
-
+import { Editor, Viewer } from '@bytemd/vue'
 import { ARTICLE_CATEGORY, ARTICLE_TAG } from '@/constant/type'
 import { ARTICLE_UNIT } from '@/constant/article'
 
@@ -149,6 +150,7 @@ export default {
   name: 'ArticleDetail',
   components: {
     ByteMD,
+    Viewer,
     Tinymce,
     Upload,
     Sticky
@@ -220,7 +222,7 @@ export default {
   },
   created() {
     if (this.isEdit) {
-      const id = this.$route.query && this.$route.query.article_id
+      const id = this.$route.query && this.$route.query.article_id || 7
       this.fetchData(id)
     }
     console.log('store.getters.user_id')
@@ -228,10 +230,17 @@ export default {
     console.log(store.getters.token)
   },
   methods: {
-    fetchData(id) {
-      const { res, err } = fetchArticle(id)
-      if (res || 1) {
-        this.postForm = ARTICLE_UNIT
+    async fetchData(id) {
+      console.log(id)
+      const { res, err } = await fetchArticle(id)
+      console.log('res')
+      console.log(res)
+      if (res) {
+        console.log(res)
+        const { tag_ids, content } = res.result
+        this.postForm = res.result
+        this.postForm.tag_ids = JSON.parse(this.postForm.tag_ids)
+        this.$refs.editor.value = content
         console.log(this.postForm)
       } else {
         console.log(err)
@@ -253,7 +262,7 @@ export default {
       if (!this.titleCheck() || !this.contentCheck()) {
         return
       }
-      const query = { ...this.postForm, status: 2, user_id: 20 }
+      const query = { ...this.postForm, status: 1, user_id: 20 }
       const handler = !this.isEdit ? createArticle : updateArticle
       console.log('query')
       console.log(this.$store.getters.user_id)
