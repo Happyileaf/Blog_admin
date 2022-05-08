@@ -15,20 +15,20 @@
         class="filter-item"
         @keyup.enter.native="handleSearch"
       />
-      <el-input
+      <!-- <el-input
         v-model="searchQuery.roles"
         placeholder="角色"
         style="width: 200px"
         class="filter-item"
         @keyup.enter.native="handleSearch"
-      />
-      <el-input
+      /> -->
+      <!-- <el-input
         v-model="searchQuery.email"
         placeholder="邮箱"
         style="width: 200px"
         class="filter-item"
         @keyup.enter.native="handleSearch"
-      />
+      /> -->
       <el-select
         v-model="searchQuery.status"
         placeholder="分类"
@@ -52,7 +52,7 @@
       >
         搜索
       </el-button>
-      <el-button
+      <!-- <el-button
         class="filter-item"
         style="margin-left: 10px"
         type="primary"
@@ -60,8 +60,8 @@
         @click="handleCreate"
       >
         新增
-      </el-button>
-      <el-button
+      </el-button> -->
+      <!-- <el-button
         v-waves
         :loading="downloadLoading"
         class="filter-item"
@@ -70,7 +70,7 @@
         @click="handleDownload"
       >
         导出
-      </el-button>
+      </el-button> -->
     </div>
 
     <el-table
@@ -127,11 +127,11 @@
         width="230"
         class-name="small-padding fixed-width"
       >
-        <template slot-scope="{ row, $index }">
+        <template slot-scope="{ row }">
           <el-button type="primary" size="mini" @click="handleUpdate(row)">
             编辑
           </el-button>
-          <el-button
+          <!-- <el-button
             v-if="row.status != 1"
             size="mini"
             type="success"
@@ -153,7 +153,7 @@
             @click="handleDelete(row, $index)"
           >
             删除
-          </el-button>
+          </el-button> -->
         </template>
       </el-table-column>
     </el-table>

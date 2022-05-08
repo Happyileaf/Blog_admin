@@ -15,13 +15,13 @@
         class="filter-item"
         @keyup.enter.native="handleSearch"
       />
-      <el-input
+      <!-- <el-input
         v-model="searchQuery.rank"
         placeholder="排序"
         style="width: 200px"
         class="filter-item"
         @keyup.enter.native="handleSearch"
-      />
+      /> -->
       <el-button
         v-waves
         class="filter-item"
@@ -91,11 +91,11 @@
           <span>{{ row.category_url }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="排序" prop="rank" width="200" align="center">
+      <!-- <el-table-column label="排序" prop="rank" width="200" align="center">
         <template slot-scope="{ row }">
           {{ row.rank }}
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column
         label="背景"
         prop="back_ground"
@@ -221,37 +221,37 @@ import {
   createCategory,
   updateCategory,
   activateOrFreezeCategory,
-  deleteCategory
-} from '@/api/category'
-import waves from '@/directive/waves' // waves directive
-import { parseTime } from '@/utils'
-import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+  deleteCategory,
+} from "@/api/category";
+import waves from "@/directive/waves"; // waves directive
+import { parseTime } from "@/utils";
+import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
 
 import {
   ARTICLE_ITEM,
   ATRICLE_STATUS,
-  ATRICLE_STATUS_KV
-} from '@/constant/user'
+  ATRICLE_STATUS_KV,
+} from "@/constant/user";
 
-import { userInfo, USER_STATUS, USER_STATUS_KV } from '@/constant/user'
-import { ARTICLE_CATEGORY, CATEGORY_LIST } from '@/constant/type'
-import { ROLES } from '@/constant/roles'
+import { userInfo, USER_STATUS, USER_STATUS_KV } from "@/constant/user";
+import { ARTICLE_CATEGORY, CATEGORY_LIST } from "@/constant/type";
+import { ROLES } from "@/constant/roles";
 
 export default {
-  name: 'ComplexTable',
+  name: "ComplexTable",
   components: { Pagination },
   directives: { waves },
   filters: {
     statusFilter(status) {
       const statusMap = {
-        1: 'success',
-        0: 'info'
-      }
-      return statusMap[status]
+        1: "success",
+        0: "info",
+      };
+      return statusMap[status];
     },
     userStatusFilter(key) {
-      return USER_STATUS_KV[key]
-    }
+      return USER_STATUS_KV[key];
+    },
   },
   data() {
     return {
@@ -263,197 +263,205 @@ export default {
       listLoading: true,
       searchQuery: {
         pageNum: 1,
-        pageSize: 20
+        pageSize: 20,
       },
       searchQueryCopy: {},
       articleCategoryOptions: ARTICLE_CATEGORY,
       articleStatusOptions: ATRICLE_STATUS,
       temp: {
         category_id: 0,
-        category_name: '',
-        category_url: '',
+        category_name: "",
+        category_url: "",
         rank: 0,
-        back_ground: '',
-        status: 0
+        back_ground: "",
+        status: 0,
       },
       dialogFormVisible: false,
-      dialogStatus: '',
+      dialogStatus: "",
       textMap: {
-        update: 'Edit',
-        create: 'Create'
+        update: "Edit",
+        create: "Create",
       },
       rules: {
         category_name: [
-          { required: true, message: 'username is required', trigger: 'blur' }
+          { required: true, message: "username is required", trigger: "blur" },
         ],
         category_url: [
-          { required: true, message: 'roles is required', trigger: 'blur' }
+          { required: true, message: "roles is required", trigger: "blur" },
         ],
         rank: [
-          { required: true, message: 'email is required', trigger: 'blur' }
+          { required: true, message: "email is required", trigger: "blur" },
         ],
         back_ground: [
           {
             required: true,
-            message: 'introduction is required',
-            trigger: 'blur'
-          }
+            message: "introduction is required",
+            trigger: "blur",
+          },
         ],
         status: [
-          { required: true, message: 'status is required', trigger: 'blur' }
-        ]
+          { required: true, message: "status is required", trigger: "blur" },
+        ],
       },
-      downloadLoading: false
-    }
+      downloadLoading: false,
+    };
   },
   created() {
-    this.searchQueryCopy = { ...this.searchQuery }
-    this.getList()
+    this.searchQueryCopy = { ...this.searchQuery };
+    this.getList();
   },
   methods: {
     async getList() {
-      this.listLoading = true
-      this.searchQueryCopy = { ...this.searchQuery }
-      console.log(this.searchQueryCopy)
-      const { res, err } = await fetchCategoryList(this.searchQueryCopy)
-      console.log(res)
+      this.listLoading = true;
+      this.searchQueryCopy = { ...this.searchQuery };
+      console.log(this.searchQueryCopy);
+      const { res, err } = await fetchCategoryList(this.searchQueryCopy);
+      console.log(res);
       if (res) {
-        this.list = res.result.list
-        this.total = res.result.total
-        this.listLoading = false
+        this.list = res.result.list;
+        this.total = res.result.total;
+        this.listLoading = false;
       }
     },
     handleSearch() {
-      this.searchQueryCopy = { ...this.searchQuery }
-      this.searchQuery.pageNum = 1
-      this.getList()
+      this.searchQueryCopy = { ...this.searchQuery };
+      this.searchQuery.pageNum = 1;
+      this.getList();
     },
     async handleModifyStatus(row, status) {
       const obj = {
         category_id: row.category_id,
-        status: status
-      }
-      const { res, err } = await activateOrFreezeCategory(obj)
+        status: status,
+      };
+      const { res, err } = await activateOrFreezeCategory(obj);
       if (res) {
         this.$message({
-          message: '操作Success',
-          type: 'success'
-        })
-        row.status = status
-        this.getList()
+          message: "操作Success",
+          type: "success",
+        });
+        row.status = status;
+        this.getList();
       }
     },
     resetTemp() {
       this.temp = {
         category_id: undefined,
-        category_name: '',
-        category_url: '',
+        category_name: "",
+        category_url: "",
         rank: undefined,
-        back_ground: '',
-        status: undefined
-      }
+        back_ground: "",
+        status: undefined,
+      };
     },
     handleCreate() {
-      this.resetTemp()
-      this.dialogStatus = 'create'
-      this.dialogFormVisible = true
+      this.resetTemp();
+      this.dialogStatus = "create";
+      this.dialogFormVisible = true;
       this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
-      })
+        this.$refs["dataForm"].clearValidate();
+      });
     },
     async createData() {
-      this.$refs['dataForm'].validate(async(valid) => {
+      this.$refs["dataForm"].validate(async (valid) => {
         if (valid) {
-          console.log(this.temp)
-          const { res, err } = await createCategory(this.temp)
+          console.log(this.temp);
+          const { res, err } = await createCategory(this.temp);
           if (res) {
-            this.list.unshift(this.temp)
-            this.dialogFormVisible = false
-            console.log(this.dialogFormVisible)
+            this.list.unshift(this.temp);
+            this.dialogFormVisible = false;
+            console.log(this.dialogFormVisible);
             this.$notify({
-              title: 'Success',
-              message: 'Created Successfully',
-              type: 'success',
-              duration: 2000
-            })
-            this.getList()
+              title: "Success",
+              message: "Created Successfully",
+              type: "success",
+              duration: 2000,
+            });
+            this.getList();
           }
         }
-      })
+      });
     },
     handleUpdate(row) {
-      this.temp = { ...row } // copy obj
-      this.temp.timestamp = new Date(this.temp.timestamp)
-      this.dialogStatus = 'update'
-      this.dialogFormVisible = true
+      this.temp = { ...row }; // copy obj
+      this.temp.timestamp = new Date(this.temp.timestamp);
+      this.dialogStatus = "update";
+      this.dialogFormVisible = true;
       this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
-      })
+        this.$refs["dataForm"].clearValidate();
+      });
     },
     async updateData() {
-      this.$refs['dataForm'].validate(async(valid) => {
+      this.$refs["dataForm"].validate(async (valid) => {
         if (valid) {
-          const tempData = { ...this.temp }
-          const { res, err } = await updateCategory(tempData)
+          const tempData = { ...this.temp };
+          const { res, err } = await updateCategory(tempData);
           if (res) {
-            const index = this.list.findIndex((v) => v.id === this.temp.id)
-            this.list.splice(index, 1, this.temp)
-            this.dialogFormVisible = false
+            const index = this.list.findIndex((v) => v.id === this.temp.id);
+            this.list.splice(index, 1, this.temp);
+            this.dialogFormVisible = false;
             this.$notify({
-              title: 'Success',
-              message: 'Update Successfully',
-              type: 'success',
-              duration: 2000
-            })
-            this.getList()
+              title: "Success",
+              message: "Update Successfully",
+              type: "success",
+              duration: 2000,
+            });
+            this.getList();
           }
         }
-      })
+      });
     },
     async handleDelete(row, index) {
-      const { res, err } = await deleteCategory(row.category_id)
+      const { res, err } = await deleteCategory(row.category_id);
       if (res) {
         this.$notify({
-          title: 'Success',
-          message: 'Delete Successfully',
-          type: 'success',
-          duration: 2000
-        })
-        this.list.splice(index, 1)
-        this.getList()
+          title: "Success",
+          message: "Delete Successfully",
+          type: "success",
+          duration: 2000,
+        });
+        this.list.splice(index, 1);
+        this.getList();
       }
     },
     handleDownload() {
-      this.downloadLoading = true
-      import('@/vendor/Export2Excel').then((excel) => {
-        const tHeader = ['timestamp', 'title', 'type', 'importance', 'status']
+      this.downloadLoading = true;
+      import("@/vendor/Export2Excel").then((excel) => {
+        const tHeader = [
+          "category_id",
+          "category_name",
+          "category_url",
+          "status",
+          "create_time",
+          "update_time",
+        ];
         const filterVal = [
-          'timestamp',
-          'title',
-          'type',
-          'importance',
-          'status'
-        ]
-        const data = this.formatJson(filterVal)
+          "category_id",
+          "category_name",
+          "category_url",
+          "status",
+          "create_time",
+          "update_time",
+        ];
+        const data = this.formatJson(filterVal);
         excel.export_json_to_excel({
           header: tHeader,
           data,
-          filename: 'table-list'
-        })
-        this.downloadLoading = false
-      })
+          filename: "table-list",
+        });
+        this.downloadLoading = false;
+      });
     },
     formatJson(filterVal) {
       return this.list.map((v) =>
         filterVal.map((j) => {
-          if (j === 'timestamp') {
-            return parseTime(v[j])
+          if (j === "timestamp") {
+            return parseTime(v[j]);
           } else {
-            return v[j]
+            return v[j];
           }
         })
-      )
-    }
-  }
-}
+      );
+    },
+  },
+};
 </script>

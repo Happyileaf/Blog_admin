@@ -128,7 +128,7 @@
       </el-table-column>
       <el-table-column label="发布时间" width="100" align="center">
         <template slot-scope="{ row }">
-          <span>{{ row.article_info.create_time }}</span>
+          <span>{{ row.c }}</span>
         </template>
       </el-table-column>
       <el-table-column label="更新时间" width="100" align="center">
@@ -197,36 +197,36 @@ import {
   createArticle,
   updateArticle,
   publishOrDraftArticle,
-  deleteArticle
-} from '@/api/article'
-import waves from '@/directive/waves' // waves directive
-import { parseTime } from '@/utils'
-import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+  deleteArticle,
+} from "@/api/article";
+import waves from "@/directive/waves"; // waves directive
+import { parseTime } from "@/utils";
+import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
 
 import {
   ARTICLE_ITEM,
   ATRICLE_STATUS,
-  ATRICLE_STATUS_KV
-} from '@/constant/article'
-import { ARTICLE_CATEGORY } from '@/constant/type'
+  ATRICLE_STATUS_KV,
+} from "@/constant/article";
+import { ARTICLE_CATEGORY } from "@/constant/type";
 
-import { fetchCategoryList } from '@/api/category'
+import { fetchCategoryList } from "@/api/category";
 
 export default {
-  name: 'ComplexTable',
+  name: "ComplexTable",
   components: { Pagination },
   directives: { waves },
   filters: {
     statusFilter(status) {
       const statusMap = {
-        1: 'success',
-        0: 'info'
-      }
-      return statusMap[status]
+        1: "success",
+        0: "info",
+      };
+      return statusMap[status];
     },
     articleStatusFilter(key) {
-      return ATRICLE_STATUS_KV[key]
-    }
+      return ATRICLE_STATUS_KV[key];
+    },
   },
   data() {
     return {
@@ -240,7 +240,7 @@ export default {
         importance: undefined,
         title: undefined,
         type: undefined,
-        sort: '+id'
+        sort: "+id",
       },
       searchQueryCopy: {},
       articleCategoryOptions: ARTICLE_CATEGORY,
@@ -248,152 +248,176 @@ export default {
       temp: {
         id: undefined,
         importance: 1,
-        remark: '',
+        remark: "",
         timestamp: new Date(),
-        title: '',
-        type: '',
-        status: 'published'
+        title: "",
+        type: "",
+        status: "published",
       },
       dialogFormVisible: false,
-      dialogStatus: '',
+      dialogStatus: "",
       textMap: {
-        update: 'Edit',
-        create: 'Create'
+        update: "Edit",
+        create: "Create",
       },
       rules: {
         type: [
-          { required: true, message: 'type is required', trigger: 'change' }
+          { required: true, message: "type is required", trigger: "change" },
         ],
         timestamp: [
           {
-            type: 'date',
+            type: "date",
             required: true,
-            message: 'timestamp is required',
-            trigger: 'change'
-          }
+            message: "timestamp is required",
+            trigger: "change",
+          },
         ],
         title: [
-          { required: true, message: 'title is required', trigger: 'blur' }
-        ]
+          { required: true, message: "title is required", trigger: "blur" },
+        ],
       },
-      downloadLoading: false
-    }
+      downloadLoading: false,
+    };
   },
   created() {
-    this.searchQueryCopy = { ...this.searchQuery }
-    this.getCategoryList()
-    this.getList()
+    this.searchQueryCopy = { ...this.searchQuery };
+    this.getCategoryList();
+    this.getList();
   },
   methods: {
     async getCategoryList() {
       const { res, err } = await fetchCategoryList({
         status: 1,
         pageNum: 1,
-        pageSize: 10000
-      })
+        pageSize: 10000,
+      });
       if (res) {
-        this.articleCategoryOptions = res.result.list
+        this.articleCategoryOptions = res.result.list;
       }
     },
     async getList() {
-      this.listLoading = true
-      this.searchQueryCopy = { ...this.searchQuery }
-      console.log('this.searchQueryCopy')
-      console.log(this.searchQueryCopy)
-      const { res, err } = await fetchList(this.searchQueryCopy)
-      console.log(res)
+      this.listLoading = true;
+      this.searchQueryCopy = { ...this.searchQuery };
+      console.log("this.searchQueryCopy");
+      console.log(this.searchQueryCopy);
+      const { res, err } = await fetchList(this.searchQueryCopy);
+      console.log(res);
       if (res) {
-        this.list = res.result.list
-        this.total = res.result.total
-        console.log('this.list')
-        console.log(res.result)
-        this.listLoading = false
+        this.list = res.result.list;
+        this.total = res.result.total;
+        console.log("this.list");
+        console.log(res.result);
+        this.listLoading = false;
       }
     },
     handleSearch() {
-      this.searchQueryCopy = { ...this.searchQuery }
-      this.searchQuery.pageNum = 1
-      this.getList()
+      this.searchQueryCopy = { ...this.searchQuery };
+      this.searchQuery.pageNum = 1;
+      this.getList();
     },
     async handleModifyStatus(row, status) {
       const obj = {
         article_id: row.article_info.article_id,
-        status: status
-      }
-      const { res } = await publishOrDraftArticle(obj)
+        status: status,
+      };
+      const { res } = await publishOrDraftArticle(obj);
       if (res) {
         this.$message({
-          message: '操作Success',
-          type: 'success'
-        })
-        row.article_info.status = status
-        this.getList()
+          message: "操作Success",
+          type: "success",
+        });
+        row.article_info.status = status;
+        this.getList();
       }
     },
     resetTemp() {
       this.temp = {
         id: undefined,
         importance: 1,
-        remark: '',
+        remark: "",
         timestamp: new Date(),
-        title: '',
-        status: 'published',
-        type: ''
-      }
+        title: "",
+        status: "published",
+        type: "",
+      };
     },
     handleCreate() {
-      this.$router.push({ path: '/article/issue', query: {}})
+      this.$router.push({ path: "/article/issue", query: {} });
     },
     handleUpdate(row) {
       this.$router.push({
-        path: '/article/issue',
-        query: { article_id: row.article_info.article_id }
-      })
+        path: "/article/issue",
+        query: { article_id: row.article_info.article_id },
+      });
     },
     async handleDelete(row, index) {
-      const { res } = await deleteArticle(row.article_info.article_id)
+      const { res } = await deleteArticle(row.article_info.article_id);
       if (res) {
         this.$notify({
-          title: 'Success',
-          message: 'Delete Successfully',
-          type: 'success',
-          duration: 2000
-        })
-        this.list.splice(index, 1)
-        this.getList()
+          title: "Success",
+          message: "Delete Successfully",
+          type: "success",
+          duration: 2000,
+        });
+        this.list.splice(index, 1);
+        this.getList();
       }
     },
     handleDownload() {
-      this.downloadLoading = true
-      import('@/vendor/Export2Excel').then((excel) => {
-        const tHeader = ['timestamp', 'title', 'type', 'importance', 'status']
+      this.downloadLoading = true;
+      import("@/vendor/Export2Excel").then((excel) => {
+        const tHeader = [
+          "article_id",
+          "user_id",
+          "category_id",
+          "tag_ids",
+          "link_url",
+          "cover_image",
+          "title",
+          "brief_content",
+          "content",
+          "visible_level",
+          "view_count",
+          "status",
+          "create_time",
+          "update_time",
+        ];
         const filterVal = [
-          'timestamp',
-          'title',
-          'type',
-          'importance',
-          'status'
-        ]
-        const data = this.formatJson(filterVal)
+          "article_id",
+          "user_id",
+          "category_id",
+          "tag_ids",
+          "link_url",
+          "cover_image",
+          "title",
+          "brief_content",
+          "content",
+          "visible_level",
+          "view_count",
+          "status",
+          "create_time",
+          "update_time",
+        ];
+        const data = this.formatJson(filterVal);
         excel.export_json_to_excel({
           header: tHeader,
           data,
-          filename: 'table-list'
-        })
-        this.downloadLoading = false
-      })
+          filename: "table-list",
+        });
+        this.downloadLoading = false;
+      });
     },
     formatJson(filterVal) {
       return this.list.map((v) =>
         filterVal.map((j) => {
-          if (j === 'timestamp') {
-            return parseTime(v[j])
+          if (j === "timestamp") {
+            return parseTime(v.article_info[j]);
           } else {
-            return v[j]
+            return v.article_info[j];
           }
         })
-      )
-    }
-  }
-}
+      );
+    },
+  },
+};
 </script>

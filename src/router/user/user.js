@@ -15,14 +15,14 @@ export const userRouter = {
         path: 'user',
         component: () => import('@/pages/user/User'),
         name: 'User',
-        meta: { title: '普通用户', noCache: true }
+        meta: { title: '用户管理', noCache: true }
       },
-      {
-        path: 'administrator',
-        component: () => import('@/pages/user/Administrator'),
-        name: 'Administrator',
-        meta: { title: '管理员', noCache: true },
-      },
+      // {
+      //   path: 'administrator',
+      //   component: () => import('@/pages/user/Administrator'),
+      //   name: 'Administrator',
+      //   meta: { title: '管理员', noCache: true },
+      // },
     ]
   }
 
