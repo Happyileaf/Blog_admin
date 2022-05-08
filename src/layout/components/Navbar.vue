@@ -1,9 +1,14 @@
 <template>
   <div class="navbar">
-    <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
+    <hamburger
+      id="hamburger-container"
+      :is-active="sidebar.opened"
+      class="hamburger-container"
+      @toggleClick="toggleSideBar"
+    />
 
     <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
-
+    <div class="dividing" />
     <!-- <div class="right-menu">
       <template v-if="device!=='mobile'">
         <search id="header-search" class="right-menu-item" />
@@ -41,7 +46,15 @@
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
+
     </div> -->
+    <el-button
+      class="logout-Btn"
+      type="primary"
+      @click="logout"
+    >
+      Log Out
+    </el-button>
   </div>
 </template>
 
@@ -64,19 +77,17 @@ export default {
     Search
   },
   computed: {
-    ...mapGetters([
-      'sidebar',
-      'avatar',
-      'device'
-    ])
+    ...mapGetters(['sidebar', 'avatar', 'device'])
   },
   methods: {
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
     },
     async logout() {
+      console.log('click logout')
       await this.$store.dispatch('user/logout')
       console.log('check1')
+      // this.$router.push(`/login?redirect=${this.$route.fullPath}`);
       this.$router.push(`/login?redirect=${this.$route.fullPath}`)
     }
   }
@@ -85,27 +96,39 @@ export default {
 
 <style lang="scss" scoped>
 .navbar {
+  display: flex;
+  // justify-content: space-between;
+  align-items: center;
   height: 50px;
   overflow: hidden;
   position: relative;
   background: #fff;
-  box-shadow: 0 1px 4px rgba(0,21,41,.08);
+  box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
 
   .hamburger-container {
     line-height: 46px;
     height: 100%;
     float: left;
     cursor: pointer;
-    transition: background .3s;
-    -webkit-tap-highlight-color:transparent;
+    transition: background 0.3s;
+    -webkit-tap-highlight-color: transparent;
 
     &:hover {
-      background: rgba(0, 0, 0, .025)
+      background: rgba(0, 0, 0, 0.025);
     }
   }
 
   .breadcrumb-container {
     float: left;
+  }
+
+  .dividing{
+    flex:1
+  }
+
+  .logout-Btn{
+    margin: 0 50px 0 0;
+    cursor: pointer;
   }
 
   .errLog-container {
@@ -132,10 +155,10 @@ export default {
 
       &.hover-effect {
         cursor: pointer;
-        transition: background .3s;
+        transition: background 0.3s;
 
         &:hover {
-          background: rgba(0, 0, 0, .025)
+          background: rgba(0, 0, 0, 0.025);
         }
       }
     }

@@ -6,7 +6,7 @@
 
     <div class="user-profile">
       <div class="box-center">
-        <pan-thumb
+        <!-- <pan-thumb
           :image="user.avatar"
           :height="'100px'"
           :width="'100px'"
@@ -14,7 +14,8 @@
         >
           <div>Hello</div>
           {{ user.roles }}
-        </pan-thumb>
+        </pan-thumb> -->
+        <img :src="user.avatar" alt="">
       </div>
       <div class="box-center">
         <div class="user-name text-center">{{ user.nick_name }}</div>
@@ -113,6 +114,13 @@ export default {
 
   .box-center {
     padding-top: 10px;
+    text-align: center;
+
+    img{
+      width: 60%;
+      margin: auto;
+      border-radius: 50%;
+    }
   }
 
   .user-role {

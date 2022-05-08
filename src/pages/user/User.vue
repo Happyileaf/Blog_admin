@@ -327,12 +327,13 @@ export default {
   methods: {
     async getList() {
       this.listLoading = true
+      this.searchQueryCopy = { ...this.searchQuery }
       console.log(this.searchQueryCopy)
       const { res } = await fetchUserList(this.searchQueryCopy)
       console.log(res)
-
       if (res) {
         this.list = res.result.list
+        this.total = res.result.total
         this.listLoading = false
       }
     },
@@ -353,6 +354,7 @@ export default {
           type: 'success'
         })
         row.status = status
+        this.getList()
       }
     },
     resetTemp() {
@@ -373,7 +375,7 @@ export default {
         this.$refs['dataForm'].clearValidate()
       })
     },
-    createData() {
+    async createData() {
       this.$refs['dataForm'].validate(async(valid) => {
         if (valid) {
           // this.temp.roles = this.temp.roles.join(',')
@@ -388,12 +390,14 @@ export default {
               type: 'success',
               duration: 2000
             })
+            this.getList()
           }
         }
       })
     },
     handleUpdate(row) {
       this.temp = { ...row } // copy obj
+      this.temp.password = undefined
       this.temp.timestamp = new Date(this.temp.timestamp)
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
@@ -401,10 +405,12 @@ export default {
         this.$refs['dataForm'].clearValidate()
       })
     },
-    updateData() {
+    async updateData() {
       this.$refs['dataForm'].validate(async(valid) => {
         if (valid) {
-          const tempData = { ...this.temp }
+          const { password, ...otherQuery } = this.temp
+          const tempData = { ...otherQuery }
+          password && Object.assign(tempData, { password })
           console.log(tempData)
           const { res, err } = await updateUser(tempData)
           if (res) {
@@ -417,6 +423,7 @@ export default {
               type: 'success',
               duration: 2000
             })
+            this.getList()
           }
         }
       })
@@ -431,6 +438,7 @@ export default {
           duration: 2000
         })
         this.list.splice(index, 1)
+        this.getList()
       }
     },
     handleDownload() {

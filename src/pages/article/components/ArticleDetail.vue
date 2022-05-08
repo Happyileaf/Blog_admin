@@ -24,7 +24,11 @@
         </el-form-item> -->
         <Viewer />
         <el-form-item prop="content" style="margin-bottom: 30px padding:0">
-          <ByteMD ref="editor" :content="postForm.content" @changeCentent="updateContent" />
+          <ByteMD
+            ref="editor"
+            :content="postForm.content"
+            @changeCentent="updateContent"
+          />
         </el-form-item>
         <el-drawer
           title="发布"
@@ -44,9 +48,9 @@
                 <el-select v-model="postForm.category_id" placeholder="请选择">
                   <el-option
                     v-for="item in ARTICLE_CATEGORY"
-                    :key="item.key"
-                    :label="item.display_name"
-                    :value="item.key"
+                    :key="item.category_id"
+                    :label="item.category_name"
+                    :value="item.category_id"
                   />
                 </el-select>
               </el-form-item>
@@ -60,15 +64,15 @@
                   filterable
                   multiple
                   remote
-                  :remote-method="getRemoteTagList"
+                  :remote-method="getTagList"
                   placeholder="请选择标签"
-                  @focus="getRemoteTagList"
+                  @focus="getTagList"
                 >
                   <el-option
-                    v-for="item in tagListOptions"
-                    :key="item.key"
-                    :label="item.display_name"
-                    :value="item.key"
+                    v-for="item in ARTICLE_TAG"
+                    :key="item.tag_id"
+                    :label="item.tag_name"
+                    :value="item.tag_id"
                   />
                 </el-select>
               </el-form-item>
@@ -123,6 +127,8 @@ import Upload from '@/components/Upload/SingleImage3'
 import Sticky from '@/components/Sticky' // 粘性header组件
 import { validURL } from '@/utils/validate'
 import { fetchArticle, createArticle, updateArticle } from '@/api/article'
+import { fetchCategoryList } from '@/api/category'
+import { fetchTagList } from '@/api/tag'
 import { searchUser } from '@/api/remote-search'
 
 import store from '@/store'
@@ -222,14 +228,38 @@ export default {
   },
   created() {
     if (this.isEdit) {
-      const id = this.$route.query && this.$route.query.article_id || 7
+      const id = (this.$route.query && this.$route.query.article_id) || 7
       this.fetchData(id)
     }
     console.log('store.getters.user_id')
     console.log(this.$store.state.user.user_id)
     console.log(store.getters.token)
+    this.getCategoryList()
+    this.getTagList()
   },
   methods: {
+    async getCategoryList() {
+      const { res, err } = await fetchCategoryList({
+        status: 1,
+        pageNum: 1,
+        pageSize: 10000
+      })
+      if (res) {
+        this.ARTICLE_CATEGORY = res.result.list
+      }
+    },
+    async getTagList() {
+      const { res, err } = await fetchTagList({
+        status: 1,
+        pageNum: 1,
+        pageSize: 10000
+      })
+      if (res) {
+        console.log('tag res')
+        console.log(res)
+        this.ARTICLE_TAG = res.result.list
+      }
+    },
     async fetchData(id) {
       console.log(id)
       const { res, err } = await fetchArticle(id)
@@ -258,7 +288,7 @@ export default {
         }
       })
     },
-    publishArticle() {
+    async publishArticle() {
       if (!this.titleCheck() || !this.contentCheck()) {
         return
       }
@@ -268,8 +298,18 @@ export default {
       console.log(this.$store.getters.user_id)
       console.log(query)
 
-      const { res, err } = handler(query)
-      if (res || 1) {
+      const { res, err } = await handler(query)
+      if (res) {
+        this.$notify({
+          title: 'Success',
+          message: 'create Successfully',
+          type: 'success',
+          duration: 2000
+        })
+        this.$router.push({
+          path: '/article/articleList',
+          query: {}
+        })
       }
     },
     draftArticle() {

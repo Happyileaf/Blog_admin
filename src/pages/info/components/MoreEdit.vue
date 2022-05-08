@@ -108,6 +108,7 @@
                   >
                   <input
                     v-model="skill_process"
+                    type="number"
                     class="add-input"
                     placeholder="请添加进度..."
                     autocomplete="off"
@@ -167,7 +168,7 @@ export default {
       skills: [],
       socialAccount_platform: undefined,
       socialAccount_account: undefined,
-      socialAccount_avatar: '123456',
+      socialAccount_avatar: undefined,
       education_exp_item: undefined,
       skill_name: undefined,
       skill_process: undefined
@@ -191,13 +192,20 @@ export default {
       this.skills = [...this.user.skills]
     }
   },
-  created() {
-    console.log('user')
-    console.log(this.user)
-    this.socialAccount = [...this.user.socialAccount]
-    this.education = [...this.user.education]
-    this.skills = [...this.user.skills]
-  },
+  // created() {
+  //   // console.log('user')
+  //   // console.log(this.user)
+  //   this.socialAccount = [...this.user.socialAccount];
+  //   this.education = [...this.user.education];
+  //   this.skills = [...this.user.skills];
+  // },
+  // mounted() {
+  //   // console.log('user')
+  //   // console.log(this.user)
+  //   this.socialAccount = [...this.user.socialAccount];
+  //   this.education = [...this.user.education];
+  //   this.skills = [...this.user.skills];
+  // },
   methods: {
     handleClose(done) {
       this.$confirm('还有未保存的工作，确定要关闭吗？')
@@ -243,7 +251,7 @@ export default {
       if (!this.skill_name || !this.skill_process) return
       this.skills.push({
         name: this.skill_name,
-        process: this.skill_process
+        process: this.skill_process - 0
       })
       this.skill_name = ''
       this.skill_process = ''

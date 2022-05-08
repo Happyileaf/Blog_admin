@@ -313,11 +313,13 @@ export default {
   methods: {
     async getList() {
       this.listLoading = true
+      this.searchQueryCopy = { ...this.searchQuery }
       console.log(this.searchQueryCopy)
       const { res, err } = await fetchCategoryList(this.searchQueryCopy)
       console.log(res)
       if (res) {
         this.list = res.result.list
+        this.total = res.result.total
         this.listLoading = false
       }
     },
@@ -359,7 +361,7 @@ export default {
         this.$refs['dataForm'].clearValidate()
       })
     },
-    createData() {
+    async createData() {
       this.$refs['dataForm'].validate(async(valid) => {
         if (valid) {
           console.log(this.temp)
@@ -374,6 +376,7 @@ export default {
               type: 'success',
               duration: 2000
             })
+            this.getList()
           }
         }
       })
@@ -387,7 +390,7 @@ export default {
         this.$refs['dataForm'].clearValidate()
       })
     },
-    updateData() {
+    async updateData() {
       this.$refs['dataForm'].validate(async(valid) => {
         if (valid) {
           const tempData = { ...this.temp }

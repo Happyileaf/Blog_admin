@@ -24,9 +24,9 @@
       >
         <el-option
           v-for="item in articleCategoryOptions"
-          :key="item.key"
-          :label="item.display_name"
-          :value="item.key"
+          :key="item.category_id"
+          :label="item.category_name"
+          :value="item.category_id"
         />
       </el-select>
       <!-- <el-select
@@ -128,16 +128,12 @@
       </el-table-column>
       <el-table-column label="发布时间" width="100" align="center">
         <template slot-scope="{ row }">
-          <span>{{
-            row.article_info.create_time
-          }}</span>
+          <span>{{ row.article_info.create_time }}</span>
         </template>
       </el-table-column>
       <el-table-column label="更新时间" width="100" align="center">
         <template slot-scope="{ row }">
-          <span>{{
-            row.article_info.update_time
-          }}</span>
+          <span>{{ row.article_info.update_time }}</span>
         </template>
       </el-table-column>
       <el-table-column label="状态" class-name="status-col" width="100">
@@ -214,6 +210,8 @@ import {
 } from '@/constant/article'
 import { ARTICLE_CATEGORY } from '@/constant/type'
 
+import { fetchCategoryList } from '@/api/category'
+
 export default {
   name: 'ComplexTable',
   components: { Pagination },
@@ -283,17 +281,32 @@ export default {
   },
   created() {
     this.searchQueryCopy = { ...this.searchQuery }
+    this.getCategoryList()
     this.getList()
   },
   methods: {
+    async getCategoryList() {
+      const { res, err } = await fetchCategoryList({
+        status: 1,
+        pageNum: 1,
+        pageSize: 10000
+      })
+      if (res) {
+        this.articleCategoryOptions = res.result.list
+      }
+    },
     async getList() {
       this.listLoading = true
+      this.searchQueryCopy = { ...this.searchQuery }
+      console.log('this.searchQueryCopy')
+      console.log(this.searchQueryCopy)
       const { res, err } = await fetchList(this.searchQueryCopy)
       console.log(res)
       if (res) {
         this.list = res.result.list
+        this.total = res.result.total
         console.log('this.list')
-        console.log(this.list)
+        console.log(res.result)
         this.listLoading = false
       }
     },
@@ -302,18 +315,19 @@ export default {
       this.searchQuery.pageNum = 1
       this.getList()
     },
-    handleModifyStatus(row, status) {
+    async handleModifyStatus(row, status) {
       const obj = {
         article_id: row.article_info.article_id,
         status: status
       }
-      const { res } = publishOrDraftArticle(obj)
-      if (res || 1) {
+      const { res } = await publishOrDraftArticle(obj)
+      if (res) {
         this.$message({
           message: '操作Success',
           type: 'success'
         })
         row.article_info.status = status
+        this.getList()
       }
     },
     resetTemp() {
@@ -336,9 +350,9 @@ export default {
         query: { article_id: row.article_info.article_id }
       })
     },
-    handleDelete(row, index) {
-      const { res } = deleteArticle(row.article_info.article_id)
-      if (res || 1) {
+    async handleDelete(row, index) {
+      const { res } = await deleteArticle(row.article_info.article_id)
+      if (res) {
         this.$notify({
           title: 'Success',
           message: 'Delete Successfully',
@@ -346,6 +360,7 @@ export default {
           duration: 2000
         })
         this.list.splice(index, 1)
+        this.getList()
       }
     },
     handleDownload() {

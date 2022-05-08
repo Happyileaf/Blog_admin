@@ -308,11 +308,13 @@ export default {
   methods: {
     async getList() {
       this.listLoading = true
+      this.searchQueryCopy = { ...this.searchQuery }
       console.log(this.searchQueryCopy)
       const { res } = await fetchTagList(this.searchQueryCopy)
       console.log(res)
       if (res) {
         this.list = res.result.list
+        this.total = res.result.total
         this.listLoading = false
       }
     },
